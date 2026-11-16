@@ -1,0 +1,3047 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Espace Professeur — Corrigé Pro1B : Les menaces pesant sur les sols</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts : Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Animations douces */
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 2.5s infinite;
+        }
+
+        /* Loupe pédologique */
+        #soil-scene {
+            cursor: crosshair;
+            touch-action: none;
+            user-select: none;
+        }
+        #magnifying-lens {
+            pointer-events: none;
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), inset 0 0 18px rgba(255, 255, 255, 0.35);
+        }
+
+        .organism-node {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
+        }
+        .organism-node:hover, .organism-node.active-specimen {
+            transform: translate(-50%, -50%) scale(1.28) !important;
+            z-index: 30;
+            filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.9));
+        }
+
+        /* Feuille de style dédiée à l'impression PDF de la copie élève */
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none !important;
+            }
+            #print-report {
+                display: block !important;
+            }
+            .print-break {
+                page-break-inside: avoid;
+            }
+            /* Export du cours complet : toutes les étapes sont imprimées */
+            body.full-course-pdf header,
+            body.full-course-pdf .no-print,
+            body.full-course-pdf #print-report {
+                display: none !important;
+            }
+            /* Le conteneur principal porte lui-même la classe no-print :
+               on le réaffiche explicitement pour l'export du cours complet. */
+            body.full-course-pdf main.no-print,
+            body.full-course-pdf main {
+                display: block !important;
+                visibility: visible !important;
+                max-width: none !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            body.full-course-pdf .step-section,
+            body.full-course-pdf .step-section.hidden,
+            body.full-course-pdf .doc-panel,
+            body.full-course-pdf .doc-panel.hidden {
+                display: block !important;
+                visibility: visible !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            body.full-course-pdf .teacher-solution {
+                display: block !important;
+            }
+            body.full-course-pdf button,
+            body.full-course-pdf input,
+            body.full-course-pdf textarea,
+            body.full-course-pdf select {
+                break-inside: avoid;
+            }
+            body.full-course-pdf section,
+            body.full-course-pdf .rounded-2xl {
+                break-inside: auto;
+            }
+            body.full-course-pdf a {
+                color: #000 !important;
+                text-decoration: underline;
+            }
+        }
+    </style>
+<style id="professor-theme">
+        /* Identité visuelle de l'espace professeur : vert profond, accents ambre */
+        body { background-color: #f8fafc; }
+        header.sticky {
+            background: #064e3b !important;
+            border-color: #065f46 !important;
+        }
+        header .bg-slate-800 {
+            background-color: rgba(6, 78, 59, .72) !important;
+        }
+        header .border-slate-700, header .border-slate-600 {
+            border-color: rgba(167, 243, 208, .22) !important;
+        }
+        header nav { background: rgba(6, 78, 59, .72) !important; }
+        #teacher-banner {
+            background: #fffbeb;
+            border-color: #f59e0b;
+        }
+        #teacher-banner p { color: #78350f; }
+        .teacher-solution {
+            display: block;
+            border-left-width: 4px;
+            border-left-color: #d97706;
+            line-height: 1.65;
+        }
+        .teacher-solution strong { color: #92400e; }
+        @media print {
+            .teacher-solution { display: block !important; }
+        }
+    </style>
+<style id="teacher-correction-enrichment">
+.teacher-guide-note { box-shadow: 0 2px 5px rgba(15,23,42,.06); }
+.teacher-guide-note h3 { color:#92400e; }
+.teacher-guide-note table { width:100%; border-collapse:collapse; margin-top:.5rem; }
+.teacher-guide-note th,.teacher-guide-note td { border:1px solid #fcd34d; padding:.4rem .5rem; text-align:left; vertical-align:top; }
+.teacher-guide-note th { background:#fef3c7; font-weight:700; }
+.teacher-guide-note ul { list-style:disc; padding-left:1.2rem; margin:.35rem 0; }
+.teacher-guide-note ol { list-style:decimal; padding-left:1.2rem; margin:.35rem 0; }
+</style>
+
+<style id="modern-professor-theme">
+:root {
+  --prof-ink:#102a43;
+  --prof-deep:#102f3a;
+  --prof-deep-2:#164e63;
+  --prof-teal:#0f766e;
+  --prof-mint:#ccfbf1;
+  --prof-amber:#f59e0b;
+  --prof-paper:#f3f7f8;
+}
+body { background:var(--prof-paper) !important; color:var(--prof-ink) !important; }
+header.sticky {
+  background:linear-gradient(112deg,#102f3a 0%,#124b52 58%,#116466 100%) !important;
+  border-bottom:1px solid rgba(153,246,228,.22) !important;
+  box-shadow:0 10px 28px rgba(16,42,67,.18) !important;
+}
+header .bg-emerald-600 { background:linear-gradient(135deg,#0d9488,#2dd4bf) !important; }
+header nav { background:rgba(5,35,43,.34) !important; border-color:rgba(204,251,241,.16) !important; }
+header .step-tab { border-radius:12px !important; }
+header .step-tab.bg-emerald-600 { background:linear-gradient(135deg,#0f9f8f,#0d9488) !important; }
+.prof-toolbar {
+  background:rgba(10,31,43,.88);
+  border:1px solid rgba(148,190,197,.28);
+  box-shadow:0 8px 24px rgba(2,20,28,.18);
+}
+.prof-view-btn { color:#cbd5e1; background:transparent; white-space:nowrap; }
+.prof-view-btn:hover { background:rgba(255,255,255,.09); color:#fff; }
+.prof-view-teacher.is-active {
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  color:#17212b;
+  box-shadow:0 3px 10px rgba(245,158,11,.22);
+}
+.prof-view-student.is-active {
+  background:rgba(255,255,255,.13);
+  color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.prof-print-btn {
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);
+  color:#17212b;
+  min-height:48px;
+}
+.prof-print-btn:hover { background:linear-gradient(135deg,#fcd34d,#f59e0b); transform:translateY(-1px); }
+#teacher-banner {
+  background:linear-gradient(120deg,#fff8e6,#fffdf5) !important;
+  border-color:#f5bd4f !important;
+  border-radius:16px !important;
+}
+.teacher-solution {
+  background:#effcf8 !important;
+  border-left-color:#0f9f8f !important;
+  border-radius:0 12px 12px 0;
+}
+.teacher-solution strong { color:#0f766e !important; }
+.teacher-guide-note { background:#f0fdfa !important; border-color:#99f6e4 !important; }
+.teacher-guide-note h3 { color:#0f766e !important; }
+.teacher-guide-note th { background:#ccfbf1 !important; }
+.teacher-guide-note th,.teacher-guide-note td { border-color:#99f6e4 !important; }
+main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f766e,#164e63) !important; }
+@media (max-width:760px) {
+  .prof-toolbar { width:100%; justify-content:space-between; flex-wrap:wrap; }
+  .prof-view-btn { flex:1; justify-content:center; padding:.65rem .55rem; font-size:.78rem; }
+  .prof-print-btn { flex:1 1 100%; justify-content:center; }
+}
+@media print {
+  .teacher-solution { display:block !important; }
+}
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- ===================================================================== -->
+<!-- EN-TÊTE FIXE DE PILOTAGE PÉDAGOGIQUE                                  -->
+<!-- ===================================================================== -->
+<header class="sticky top-0 z-40 bg-slate-900 text-white shadow-lg border-b border-slate-700 no-print">
+<div class="max-w-7xl mx-auto px-3 sm:px-6 py-3">
+<!-- Ligne supérieure : Identité du module, élève, chronomètre, biblio -->
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-inner shrink-0">
+<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded-full">
+                                VERSION PROFESSEUR • Module Pro1B • Première Bac Pro CGEA
+                            </span>
+<span class="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-slate-800 px-2.5 py-0.5 rounded-full border border-slate-700" id="save-indicator">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-soft"></span>
+                                Sauvegarde auto active
+                            </span>
+</div>
+<h1 class="text-sm sm:text-lg font-bold tracking-tight text-white mt-0.5">
+                            Les menaces pesant sur les sols : Biodiversité &amp; Matière Organique
+                        </h1>
+</div>
+</div>
+<!-- Contrôles professeur : bascule de vue et impression du corrigé -->
+<div class="prof-toolbar flex items-center gap-2 sm:gap-2.5 rounded-2xl px-2.5 py-2">
+  <button id="btn-student-view" type="button" onclick="setTeacherView(false)" class="prof-view-btn prof-view-student inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition" aria-pressed="false">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2m6-10a4 4 0 100-8 4 4 0 000 8zm10 10v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Élève
+  </button>
+  <button id="btn-teacher-view" type="button" onclick="setTeacherView(true)" class="prof-view-btn prof-view-teacher inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition" aria-pressed="true">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7h18M5 7l1.5 13h11L19 7M9 7V5a3 3 0 016 0v2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l3 2 3-2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Enseignant (Corrigés)
+  </button>
+  <button id="btn-print-correction" type="button" onclick="printTeacherCorrection()" class="prof-print-btn inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold transition shadow-sm">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v7H6z" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 12h.01" stroke-linecap="round"/></svg>
+    Imprimer le corrigé
+  </button>
+</div>
+<!-- Code progressif : affiché entre les commandes professeur et les étapes -->
+<div id="progressive-password-hint" class="hidden mt-2 mb-1 rounded-xl border border-red-300/70 bg-red-50 px-4 py-2.5 text-sm text-red-800 shadow-sm" aria-live="polite">
+  <span id="progressive-password-label" class="font-semibold">Code à communiquer :</span>
+  <span id="progressive-password-value" class="ml-2 font-extrabold tracking-widest text-red-700"></span>
+</div>
+<!-- Éléments conservés pour les fonctions internes de chronométrage et de sauvegarde -->
+<div class="hidden" aria-hidden="true">
+  <input id="student-name" type="text" value=""/>
+  <span id="timer-display">50:00</span>
+  <button id="timer-toggle" type="button"><svg id="timer-icon-play"></svg><svg id="timer-icon-pause" class="hidden"></svg></button>
+  <button id="timer-reset" type="button"></button>
+  <button onclick="downloadFullCoursePDF()" type="button">Télécharger le cours en PDF</button>
+  <button onclick="openBiblioModal()" type="button">Sources &amp; Biblio</button>
+</div>
+<!-- Barre de navigation des 4 étapes avec cadenas -->
+<nav aria-label="Étapes du cours" class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-3 pt-2.5 border-t border-slate-800">
+<button class="step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-emerald-600 text-white shadow" id="nav-step-1" onclick="selectStep(1)">
+<span class="truncate">1. Mise en situation (5 min)</span>
+<span class="ml-1.5 shrink-0 text-emerald-200" id="lock-icon-1">🔓</span>
+</button>
+<button class="step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" id="nav-step-2" onclick="selectStep(2)">
+<span class="truncate">2. Dossiers &amp; Labo (25 min)</span>
+<span class="ml-1.5 shrink-0" id="lock-icon-2">🔒</span>
+</button>
+<button class="step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" id="nav-step-3" onclick="selectStep(3)">
+<span class="truncate">3. Fiche synthèse (15 min)</span>
+<span class="ml-1.5 shrink-0" id="lock-icon-3">🔒</span>
+</button>
+<button class="step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" id="nav-step-4" onclick="selectStep(4)">
+<span class="truncate">4. Bilan Flash &amp; PDF (5 min)</span>
+<span class="ml-1.5 shrink-0" id="lock-icon-4">🔒</span>
+</button>
+</nav>
+</div>
+</header>
+<!-- ===================================================================== -->
+<!-- CONTENU PRINCIPAL INTERACTIF                                          -->
+<!-- ===================================================================== -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 no-print">
+<!-- Bandeau Mode Enseignant actif (masqué par défaut) -->
+<div class="mb-6 bg-amber-50 border-2 border-amber-400 rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-sm" id="teacher-banner">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-1 rounded-lg bg-amber-500 text-white text-xs font-bold uppercase">Mode Enseignant Actif</span>
+<p class="text-sm text-amber-950 font-medium">Toutes les étapes sont déverrouillées et les corrigés types sont accessibles.</p>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition shadow-sm" id="btn-toggle-solutions" onclick="toggleTeacherSolutions()">
+                Masquer les corrigés types
+            </button>
+</div>
+
+<!-- ================================================================= -->
+<!-- ÉTAPE 1 : MISE EN SITUATION PROFESSIONNELLE (5 min)               -->
+<!-- ================================================================= -->
+<section class="step-section space-y-6" id="step-1">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-gradient-to-r from-emerald-800 to-teal-700 px-6 py-5 text-white">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<span class="text-xs font-bold uppercase tracking-wider bg-white/15 px-3 py-1 rounded-full">Étape 1 / 4 • Durée conseillée : 5 min</span>
+<span class="text-xs text-emerald-100">Support : EARL des Deux Terroirs</span>
+</div>
+<h2 class="text-xl sm:text-2xl font-bold mt-2">Mise en situation professionnelle : Diagnostic de parcelles contrastées</h2>
+<p class="text-sm text-emerald-100 mt-1">
+                        En stage ou lors d'un tour de plaine avec un conseiller agronomique, vous comparez deux systèmes agricoles français : une parcelle de <strong>grandes cultures intensives</strong> (type Beauce / Champagne) et une <strong>prairie permanente d'élevage</strong> (type Bretagne / Massif central).
+                    </p>
+</div>
+<div class="p-6 space-y-6">
+<!-- 3 cartes de constats terrain -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="rounded-xl border border-amber-200 bg-amber-50/70 p-4 space-y-2">
+<div class="flex items-center gap-2 text-amber-800 font-bold text-sm">
+<span class="w-7 h-7 rounded-lg bg-amber-200/80 flex items-center justify-center text-amber-900">1</span>
+<h3>Érosion &amp; homogénéisation biotique</h3>
+</div>
+<p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                Les sols abritent <strong>un quart (25 %) de la biodiversité totale de la planète</strong>. Sous l'effet des usages intensifs, on observe un déclin global et une <strong>homogénéisation biotique</strong> : disparition des espèces endémiques spécialisées au profit des mêmes espèces banales partout.
+                            </p>
+</div>
+<div class="rounded-xl border border-orange-200 bg-orange-50/70 p-4 space-y-2">
+<div class="flex items-center gap-2 text-orange-800 font-bold text-sm">
+<span class="w-7 h-7 rounded-lg bg-orange-200/80 flex items-center justify-center text-orange-900">2</span>
+<h3>Chute des matières organiques (MO)</h3>
+</div>
+<p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                En grandes cultures intensives, les successions culturales exportatrices épuisent le sol : le taux de MO chute sous <strong>1,7 % à 2,2 %</strong> (contre <strong>&gt; 3,4 % à &gt; 4,3 %</strong> en prairies permanentes). Les sols deviennent battants et biologiquement pauvres.
+                            </p>
+</div>
+<div class="rounded-xl border border-sky-200 bg-sky-50/70 p-4 space-y-2">
+<div class="flex items-center gap-2 text-sky-800 font-bold text-sm">
+<span class="w-7 h-7 rounded-lg bg-sky-200/80 flex items-center justify-center text-sky-900">3</span>
+<h3>Impasse des engrais minéraux</h3>
+</div>
+<p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                Pour maintenir les rendements, le recours massif aux engrais azotés minéraux pose deux limites majeures : leur fabrication industrielle est <strong>très consommatrice en énergie</strong> et leur excès entraîne une <strong>pollution des eaux souterraines et de surface</strong>.
+                            </p>
+</div>
+</div>
+<!-- Problématique encadrée -->
+<div class="rounded-xl bg-slate-900 text-white p-5 border-l-4 border-emerald-400">
+<p class="text-xs font-bold uppercase tracking-wider text-emerald-400">Problématique de la séance</p>
+<p class="text-base sm:text-lg font-semibold mt-1">
+                            Comment l'intensification des pratiques agricoles menace-t-elle la biodiversité et le stock de matière organique des sols, et quels leviers agronomiques permettent de restaurer durablement leur vie biologique ?
+                        </p>
+</div>
+<!-- Zone de saisie élève -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-slate-800" for="input-hypothesis">
+                            Votre réflexion et vos hypothèses initiales (3 à 5 lignes) :
+                        </label>
+<p class="text-xs text-slate-500">
+                            D'après vos observations sur le terrain ou en stage, pourquoi un sol travaillé et laissé nu abrite-t-il moins d'organismes vivants qu'une prairie permanente ?
+                        </p>
+<textarea class="w-full rounded-xl border border-slate-300 p-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition" id="input-hypothesis" placeholder="Rédigez ici vos hypothèses initiales (enregistrement automatique)..." rows="4"></textarea>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Repères de correction — mise en situation</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><p><strong>Attendus à faire émerger à l’oral :</strong> relier les constats visibles (sol nu, érosion, baisse de matière organique, simplification des rotations) à leurs conséquences biologiques et agronomiques.</p>
+<ul>
+<li><strong>Biodiversité :</strong> la disparition d’habitats et la perturbation répétée du sol favorisent quelques espèces généralistes au détriment d’espèces spécialisées.</li>
+<li><strong>Matière organique :</strong> des apports insuffisants, l’exportation des résidus et une faible couverture peuvent réduire progressivement le stock de MO.</li>
+<li><strong>Fertilité :</strong> les engrais minéraux apportent des éléments nutritifs mais ne remplacent ni le carbone organique, ni les organismes, ni la structure du sol.</li>
+</ul>
+<p><strong>Relance possible :</strong> « Quelles pratiques permettraient de restaurer simultanément la couverture, les apports organiques et l’activité biologique ? »</p>
+<p><em>Évaluation :</em> valoriser une hypothèse argumentée et le lien cause → conséquence → levier, plutôt qu’une liste de mots-clés.</p></div>
+</div>
+</div>
+</aside>
+
+<div class="flex justify-end pt-2">
+<button class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition" onclick="selectStep(2)">
+<span>Passer à l'Étape 2 (Dossiers &amp; Laboratoire)</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- ÉTAPE 2 : DOSSIERS DOCUMENTAIRES, LOUPE & SIMULATEUR (25 min)      -->
+<!-- ================================================================= -->
+<section class="step-section hidden space-y-8" id="step-2">
+<!-- PARTIE A : DOSSIERS DOCUMENTAIRES + QUESTIONS D'ANALYSE -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-slate-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Étape 2 • Partie A</span>
+<h2 class="text-lg sm:text-xl font-bold">Exploitation du dossier scientifique (Docs 1 à 3)</h2>
+</div>
+<span class="text-xs bg-slate-700 px-3 py-1 rounded-full text-slate-200">Durée conseillée : 25 min (Parties A + B + C)</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12">
+<!-- Colonne Gauche : Onglets Documentaires (7 cols) -->
+<div class="lg:col-span-7 border-b lg:border-b-0 lg:border-r border-slate-200 p-5 sm:p-6 bg-slate-50/50">
+<!-- Sélecteur d'onglets -->
+<div class="flex flex-wrap gap-2 mb-5">
+<button class="doc-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm transition" id="doc-tab-1" onclick="switchDocTab(1)">
+                                Doc 1 • Biodiversité &amp; Tailles
+                            </button>
+<button class="doc-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition" id="doc-tab-2" onclick="switchDocTab(2)">
+                                Doc 2 • Cartes RMQS &amp; ADN
+                            </button>
+<button class="doc-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition" id="doc-tab-3" onclick="switchDocTab(3)">
+                                Doc 3 • MO &amp; Engrais minéraux
+                            </button>
+</div>
+<!-- DOCUMENT 1 -->
+<div class="doc-panel space-y-4" id="doc-content-1">
+<div class="border-b border-slate-200 pb-3">
+<h3 class="text-base sm:text-lg font-bold text-slate-900">Document 1 : Architecture fonctionnelle et déclin de la biodiversité du sol</h3>
+<p class="text-xs text-slate-500 mt-0.5">Sources : Cours Pro1B (2025) ; Swift et al. (1979) ; FAO et al. (2020).</p>
+</div>
+<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-xs sm:text-sm text-emerald-950 space-y-1.5">
+<p><strong>Chiffres clés :</strong> <strong>Un quart (25 %) de la biodiversité totale de la planète</strong> se trouve dans les sols. Un seul gramme de sol agricole abrite entre <strong>10<sup>8</sup> et 10<sup>9</sup> bactéries</strong> (100 millions à 1 milliard).</p>
+<p><strong>Homogénéisation biotique :</strong> Phénomène par lequel on retrouve les mêmes espèces banales (ubiquistes) partout, tandis que les espèces endémiques spécialisées déclinent selon l'intensité des usages et l'occupation des sols.</p>
+</div>
+<div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+<table class="w-full text-left border-collapse text-xs sm:text-sm">
+<thead>
+<tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+<th class="p-3 font-bold">Catégorie</th>
+<th class="p-3 font-bold">Classe de taille</th>
+<th class="p-3 font-bold">Principaux groupes représentatifs</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200">
+<tr>
+<td class="p-3 font-semibold text-emerald-800 bg-emerald-50/40">Micro-organismes</td>
+<td class="p-3 font-mono text-xs">&lt; 0,2 mm (microscopique)</td>
+<td class="p-3">Bactéries, Champignons (mycélium), Protozoaires, Micro-algues, Archées.</td>
+</tr>
+<tr>
+<td class="p-3 font-semibold text-sky-800 bg-sky-50/40">Microfaune</td>
+<td class="p-3 font-mono text-xs">&lt; 0,2 mm</td>
+<td class="p-3">Nématodes, Rotifères, Tardigrades.</td>
+</tr>
+<tr>
+<td class="p-3 font-semibold text-amber-800 bg-amber-50/40">Mésofaune</td>
+<td class="p-3 font-mono text-xs">0,2 mm à 4 mm</td>
+<td class="p-3">Enchytréides, Collemboles, Acariens, Diploures, Protoures, Thysanoures.</td>
+</tr>
+<tr>
+<td class="p-3 font-semibold text-orange-800 bg-orange-50/40">Macrofaune</td>
+<td class="p-3 font-mono text-xs">4 mm à 80 mm</td>
+<td class="p-3">Lombrics (vers de terre), Coléoptères, Diplopodes, Isopodes (cloportes), Hémiptères, Gastéropodes, Chilopodes, Larves d'insectes, Arachnides de grosse taille.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- DOCUMENT 2 -->
+<div class="doc-panel hidden space-y-4" id="doc-content-2">
+<div class="border-b border-slate-200 pb-3">
+<h3 class="text-base sm:text-lg font-bold text-slate-900">Document 2 : Biomasse microbienne (ADN) et matière organique en France</h3>
+<p class="text-xs text-slate-500 mt-0.5">Sources : Gis Sol – programme ANR Ecomic-RMQS (2010) ; Dequiedt et al. (2010/2011) ; Agreste (2001, RA 2000).</p>
+</div>
+<p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                                Le Réseau de Mesures de la Qualité des Sols (RMQS) cartographie la biomasse microbienne en mesurant la <strong>quantité d'ADN extrait par gramme de sol (µg/g)</strong>. La comparaison avec les cartes d'occupation des sols (Agreste) révèle un contraste saisissant :
+                            </p>
+<div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="bg-slate-800 text-white">
+<th class="p-2.5 font-bold">Système agricole</th>
+<th class="p-2.5 font-bold">MO (%) &amp; ADN (µg/g)</th>
+<th class="p-2.5 font-bold">Bactéries (% ADN)</th>
+<th class="p-2.5 font-bold">Champignons (% ADN)</th>
+<th class="p-2.5 font-bold">Archées / Protistes</th>
+<th class="p-2.5 font-bold">Profil global</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200">
+<tr class="bg-amber-50/40">
+<td class="p-2.5 font-bold text-slate-900">Grandes cultures intensives<br/><span class="font-normal text-slate-500">(Beauce, Champagne, plaines)</span></td>
+<td class="p-2.5">MO : <strong>&lt; 1,7 à 2,2 %</strong><br/>ADN : <strong>&lt; 6 à 9 µg/g</strong></td>
+<td class="p-2.5 font-bold text-amber-800">65 – 80 %</td>
+<td class="p-2.5 font-bold text-red-700">10 – 20 %</td>
+<td class="p-2.5">Archées : 3–7 %<br/>Prot./Alg. : 2–5 %</td>
+<td class="p-2.5">Fortement bactério-dominé, peu de champignons</td>
+</tr>
+<tr>
+<td class="p-2.5 font-bold text-slate-900">Vignobles / Arboriculture</td>
+<td class="p-2.5">ADN : <strong>9 à 11 µg/g</strong></td>
+<td class="p-2.5 font-semibold">55 – 70 %</td>
+<td class="p-2.5 font-semibold">20 – 30 %</td>
+<td class="p-2.5">Archées : 3–7 %<br/>Prot./Alg. : 2–5 %</td>
+<td class="p-2.5">Bactério-dominé, champignons intermédiaires</td>
+</tr>
+<tr class="bg-emerald-50/50">
+<td class="p-2.5 font-bold text-slate-900">Prairies permanentes / Élevage<br/><span class="font-normal text-slate-500">(Bretagne, Massif central)</span></td>
+<td class="p-2.5">MO : <strong>&gt; 3,4 à &gt; 4,3 %</strong><br/>ADN : <strong>11 à &gt; 14 µg/g</strong></td>
+<td class="p-2.5 font-bold text-emerald-800">40 – 55 %</td>
+<td class="p-2.5 font-bold text-emerald-800">35 – 50 %</td>
+<td class="p-2.5">Archées : 3–6 %<br/>Prot./Alg. : 2–6 %</td>
+<td class="p-2.5">Équilibre bactéries / champignons, riche en diversité</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Vulgarisation ADN -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div class="bg-white border border-slate-200 rounded-xl p-3 text-xs">
+<p class="font-bold text-slate-800 mb-1.5">Équivalence ADN → Cellules bactériennes/g :</p>
+<ul class="space-y-1 text-slate-700 font-mono text-[11px]">
+<li>• &lt; 6 µg/g de sol  ≈ &lt; 1 milliard de cellules/g</li>
+<li>• 6 – 9 µg/g       ≈ 1 – 2 milliards</li>
+<li>• 9 – 11 µg/g      ≈ 2 – 2,5 milliards</li>
+<li>• 11 – 14 µg/g     ≈ 2,5 – 3 milliards</li>
+<li>• &gt; 14 µg/g        ≈ +3 milliards de cellules/g</li>
+</ul>
+</div>
+<div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-sky-950 flex flex-col justify-center">
+<p class="font-bold mb-1">Note méthodologique importante :</p>
+<p class="leading-relaxed">
+                                        Ces chiffres sont des <strong>ordres de grandeur</strong> pour les bactéries uniquement. En réalité, l'ADN extrait inclut aussi les <strong>champignons et archées</strong> (qui possèdent plus d'ADN par cellule) : le « nombre de cellules » est donc une <strong>simplification pédagogique</strong>.
+                                    </p>
+</div>
+</div>
+</div>
+<!-- DOCUMENT 3 -->
+<div class="doc-panel hidden space-y-4" id="doc-content-3">
+<div class="border-b border-slate-200 pb-3">
+<h3 class="text-base sm:text-lg font-bold text-slate-900">Document 3 : Chute de la matière organique et limites des engrais minéraux</h3>
+<p class="text-xs text-slate-500 mt-0.5">Source : Cours Pro1B – Partie 1 : Qu'est-ce que le sol (2025), Section 5.</p>
+</div>
+<div class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+<div class="bg-white border border-slate-200 rounded-xl p-4 space-y-2">
+<p><strong>1. Origine biologique de la matière organique (MO) :</strong> La matière organique provient de la transformation des débris végétaux (résidus de récolte, racines, litière) par les organismes vivants du sol.</p>
+<p><strong>2. Épuisement par l'agriculture intensive :</strong> L'agriculture intensive épuise les sols en minéraux et en matières organiques. La succession rapide des cultures au cours des rotations ne leur laisse pas le temps de se régénérer.</p>
+<p><strong>3. Deux limites majeures des engrais minéraux de synthèse :</strong></p>
+<ul class="list-disc pl-5 space-y-1 text-slate-700">
+<li>Pour atteindre et maintenir les rendements, les engrais minéraux sont souvent utilisés en compensation, mais les <strong>engrais azotés sont obtenus par une réaction chimique très consommatrice en énergie</strong>.</li>
+<li>Utilisés en trop grande quantité sur les sols, les engrais minéraux peuvent conduire à une <strong>pollution des eaux souterraines (nitrates) ou de surface</strong>.</li>
+</ul>
+</div>
+<div class="rounded-xl bg-emerald-800 text-white p-4 shadow-sm">
+<p class="text-xs font-bold uppercase tracking-wider text-emerald-300">Règle d'or agronomique à retenir</p>
+<p class="text-sm sm:text-base font-semibold mt-1">
+                                        « Plus un sol est couvert, alimenté en matière organique et peu perturbé, plus il abrite de vie.<br/>
+                                        Plus il est nu, exportateur et intensément travaillé, plus cette vie décline. »
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Colonne Droite : 5 Questions d'analyse rédigées (5 cols) -->
+<div class="lg:col-span-5 p-5 sm:p-6 space-y-4 bg-white">
+<h3 class="text-base font-bold text-slate-900 border-b border-slate-200 pb-2">
+                            Questions d'analyse documentaire (rédaction)
+                        </h3>
+<!-- Q1 -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-800" for="q1">
+                                1. Définissez l'« homogénéisation biotique » et indiquez quelle proportion de la biodiversité mondiale vit dans les sols (Doc 1).
+                            </label>
+<textarea class="w-full rounded-lg border border-slate-300 p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500" id="q1" placeholder="Votre réponse..." rows="2"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-lg p-2.5 text-xs text-amber-950">
+<strong>Corrigé :</strong> 25 % (un quart) de la biodiversité mondiale vit dans les sols. L'homogénéisation biotique est le remplacement progressif des espèces endémiques spécialisées par un petit nombre d'espèces banales identiques partout, sous l'effet de l'intensification des usages.
+                            </div>
+</div>
+<!-- Q2 -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-800" for="q2">
+                                2. Comparez la biomasse microbienne (µg ADN/g) et l'équilibre Bactéries/Champignons entre les grandes cultures (Beauce) et les prairies permanentes (Bretagne) (Doc 2).
+                            </label>
+<textarea class="w-full rounded-lg border border-slate-300 p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500" id="q2" placeholder="Votre réponse..." rows="3"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-lg p-2.5 text-xs text-amber-950">
+<strong>Corrigé :</strong> Grandes cultures intensives : ADN faible (&lt; 6–9 µg/g, soit &lt; 1 à 2 Md bactéries/g), profil fortement bactério-dominé (65–80 % bactéries, seulement 10–20 % champignons). Prairies permanentes : ADN élevé (11 à &gt; 14 µg/g, soit 2,5 à +3 Md/g) avec un bon équilibre bactéries (40–55 %) / champignons (35–50 %).
+                            </div>
+</div>
+<!-- Q3 -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-800" for="q3">
+                                3. Pourquoi la conversion des µg d'ADN en « milliards de cellules bactériennes » est-elle une simplification pédagogique ? (Doc 2)
+                            </label>
+<textarea class="w-full rounded-lg border border-slate-300 p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500" id="q3" placeholder="Votre réponse..." rows="2"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-lg p-2.5 text-xs text-amber-950">
+<strong>Corrigé :</strong> Parce que l'ADN total extrait du sol comprend aussi celui des champignons et des archées, qui contiennent davantage d'ADN par cellule que les bactéries.
+                            </div>
+</div>
+<!-- Q4 -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-800" for="q4">
+                                4. Citez deux limites environnementales ou énergétiques des engrais azotés minéraux utilisés pour compenser l'épuisement des sols (Doc 3).
+                            </label>
+<textarea class="w-full rounded-lg border border-slate-300 p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500" id="q4" placeholder="Votre réponse..." rows="2"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-lg p-2.5 text-xs text-amber-950">
+<strong>Corrigé :</strong> 1) Leur fabrication chimique industrielle est très consommatrice en énergie ; 2) Leur excès entraîne une pollution des eaux souterraines et des eaux de surface.
+                            </div>
+</div>
+<!-- Q5 -->
+<div class="space-y-1.5">
+<label class="block text-xs font-bold text-slate-800" for="q5">
+                                5. Énoncez les trois conditions culturales qui favorisent la vie biologique d'un sol (Doc 3).
+                            </label>
+<textarea class="w-full rounded-lg border border-slate-300 p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500" id="q5" placeholder="Votre réponse..." rows="2"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-lg p-2.5 text-xs text-amber-950">
+<strong>Corrigé :</strong> Un sol doit être : 1) couvert, 2) alimenté en matière organique, et 3) peu perturbé (travail du sol limité).
+                            </div>
+</div>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Corrigé détaillé — questions d’analyse documentaire</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><ol>
+<li><strong>Homogénéisation biotique :</strong> remplacement progressif d’espèces locales spécialisées (endémiques) par un petit nombre d’espèces généralistes que l’on retrouve dans des milieux différents. Environ <strong>25 %</strong> de la biodiversité mondiale vit dans les sols.</li>
+<li><strong>Comparer les deux systèmes :</strong> les grandes cultures intensives de Beauce présentent une MO et une biomasse microbienne plus faibles, avec une dominance bactérienne (environ 65–80 % de bactéries et 10–20 % de champignons). Les prairies permanentes de Bretagne présentent davantage de MO et d’ADN microbien, avec un profil plus équilibré (environ 40–55 % de bactéries et 35–50 % de champignons). Faire citer les valeurs du document, pas seulement « plus/moins ».</li>
+<li><strong>Limite de la conversion ADN/cellules :</strong> l’ADN extrait n’est pas exclusivement bactérien : il comprend aussi l’ADN des champignons, archées et autres organismes. La quantité d’ADN par cellule varie selon les organismes. L’équivalence en « milliards de bactéries » est donc un ordre de grandeur pédagogique, pas un comptage direct.</li>
+<li><strong>Engrais azotés minéraux :</strong> leur fabrication industrielle est très énergivore ; en cas d’excès ou de mauvaise période d’apport, l’azote peut être perdu et contribuer à la pollution des eaux de surface et souterraines.</li>
+<li><strong>Trois conditions favorables :</strong> garder le sol couvert, l’alimenter en matière organique et limiter les perturbations mécaniques (travail du sol réduit).</li>
+</ol>
+<p><strong>Barème indicatif :</strong> 2 points par réponse (définition + donnée / comparaison chiffrée / explication / deux limites / trois leviers), soit 10 points. Accepter toute formulation équivalente scientifiquement juste.</p></div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- ============================================================= -->
+<!-- PARTIE B : ATELIER 1 — LA LOUPE PÉDOLOGIQUE INTERACTIVE        -->
+<!-- ============================================================= -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-gradient-to-r from-amber-900 via-stone-800 to-emerald-900 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-3">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-amber-300">Étape 2 • Atelier Interactif 1</span>
+<h2 class="text-lg sm:text-xl font-bold">La Loupe Pédologique : Exploration taxonomique et anatomique de la faune du sol</h2>
+</div>
+<div class="flex items-center gap-2 bg-black/30 border border-white/20 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold">
+<span>Taxons identifiés :</span>
+<span class="text-amber-300 text-base" id="discovered-count">0</span>
+<span>/ 21</span>
+</div>
+</div>
+<div class="p-5 sm:p-6 space-y-5">
+<!-- Barre de sélection du grossissement de la loupe -->
+<div class="flex flex-wrap items-center justify-between gap-3 bg-slate-100 p-3 rounded-xl border border-slate-200">
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="text-xs font-bold text-slate-700 mr-1">Strate / Grossissement :</span>
+<button class="zoom-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-white shadow-sm transition" id="zoom-btn-all" onclick="setZoomFilter('all')">
+                                Tout le profil (21 taxons)
+                            </button>
+<button class="zoom-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-orange-800 border border-orange-300 hover:bg-orange-50 transition" id="zoom-btn-macro" onclick="setZoomFilter('macro')">
+                                Macrofaune 4–80 mm (×5)
+                            </button>
+<button class="zoom-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-amber-800 border border-amber-300 hover:bg-amber-50 transition" id="zoom-btn-meso" onclick="setZoomFilter('meso')">
+                                Mésofaune 0,2–4 mm (×20)
+                            </button>
+<button class="zoom-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-sky-800 border border-sky-300 hover:bg-sky-50 transition" id="zoom-btn-microfaune" onclick="setZoomFilter('microfaune')">
+                                Microfaune &lt; 0,2 mm (×100)
+                            </button>
+<button class="zoom-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-emerald-800 border border-emerald-300 hover:bg-emerald-50 transition" id="zoom-btn-microorg" onclick="setZoomFilter('microorg')">
+                                Micro-organismes &lt; 0,05 mm (×1000)
+                            </button>
+</div>
+<p class="text-xs text-slate-600 italic">
+                            Déplacez la loupe sur le profil pédologique ou cliquez sur un taxon pour observer son anatomie SVG.
+                        </p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+<!-- Scène Coupe de Sol Interactive (7 cols) -->
+<div class="lg:col-span-7 relative rounded-2xl overflow-hidden border-2 border-stone-700 shadow-inner h-[480px] sm:h-[520px]" id="soil-scene">
+<!-- Arrière-plan SVG du profil pédologique -->
+<svg class="w-full h-full object-cover" preserveaspectratio="none" viewbox="0 0 800 500">
+<defs>
+<lineargradient id="skyGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#bae6fd"></stop>
+<stop offset="100%" stop-color="#e0f2fe"></stop>
+</lineargradient>
+<lineargradient id="litterGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4d7c0f"></stop>
+<stop offset="45%" stop-color="#713f12"></stop>
+<stop offset="100%" stop-color="#451a03"></stop>
+</lineargradient>
+<lineargradient id="horizonAGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#422006"></stop>
+<stop offset="55%" stop-color="#5c2d0c"></stop>
+<stop offset="100%" stop-color="#78350f"></stop>
+</lineargradient>
+<lineargradient id="horizonBGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#92400e"></stop>
+<stop offset="100%" stop-color="#b45309"></stop>
+</lineargradient>
+</defs>
+<!-- Ciel & couvert végétal -->
+<rect fill="url(#skyGrad)" height="75" width="800" x="0" y="0"></rect>
+<path d="M20,75 Q25,35 15,20 M35,75 Q38,40 48,22 M70,75 Q65,30 58,15 M90,75 Q95,42 105,25 M140,75 Q135,32 128,18 M160,75 Q165,38 175,20 M220,75 Q215,35 208,16 M250,75 Q255,40 266,24 M310,75 Q305,30 298,14 M340,75 Q348,42 355,25 M410,75 Q405,34 396,18 M440,75 Q445,40 456,22 M510,75 Q505,30 495,15 M540,75 Q548,40 558,24 M610,75 Q605,35 595,18 M645,75 Q650,42 660,25 M710,75 Q705,30 696,15 M745,75 Q752,40 762,22" fill="none" stroke="#15803d" stroke-linecap="round" stroke-width="4"></path>
+<!-- Horizon O : Litière -->
+<rect fill="url(#litterGrad)" height="60" width="800" x="0" y="75"></rect>
+<!-- Horizon A : Organo-minéral -->
+<rect fill="url(#horizonAGrad)" height="235" width="800" x="0" y="135"></rect>
+<!-- Horizon B : Minéral profond -->
+<rect fill="url(#horizonBGrad)" height="130" width="800" x="0" y="370"></rect>
+<!-- Réseau racinaire & galeries de lombrics -->
+<path d="M120,75 C125,140 95,190 110,270 C120,320 90,380 105,450" fill="none" opacity="0.45" stroke="#fde68a" stroke-width="2.5"></path>
+<path d="M120,130 C150,165 170,210 155,260" fill="none" opacity="0.4" stroke="#fde68a" stroke-width="1.8"></path>
+<path d="M430,75 C420,150 450,210 435,295 C425,350 445,410 430,470" fill="none" opacity="0.45" stroke="#fde68a" stroke-width="2.5"></path>
+<path d="M660,75 C675,145 645,205 665,280 C680,340 650,400 660,460" fill="none" opacity="0.45" stroke="#fde68a" stroke-width="2.5"></path>
+<path d="M260,80 C250,160 290,220 270,320 C260,370 285,430 275,480" fill="none" opacity="0.5" stroke="#1c0a00" stroke-linecap="round" stroke-width="12"></path>
+<path d="M550,85 C565,170 530,240 555,340" fill="none" opacity="0.45" stroke="#1c0a00" stroke-linecap="round" stroke-width="10"></path>
+<!-- Cailloux / agrégats -->
+<ellipse cx="190" cy="420" fill="#78716c" opacity="0.6" rx="22" ry="13"></ellipse>
+<ellipse cx="510" cy="445" fill="#78716c" opacity="0.6" rx="28" ry="15"></ellipse>
+<ellipse cx="730" cy="405" fill="#78716c" opacity="0.6" rx="18" ry="11"></ellipse>
+<!-- Étiquettes d'horizons -->
+<text fill="#fef08a" font-size="13" font-weight="bold" opacity="0.95" x="14" y="102">Horizon O : Litière &amp; débris végétaux (Macrofaune épigée)</text>
+<text fill="#fed7aa" font-size="13" font-weight="bold" opacity="0.9" x="14" y="158">Horizon A : Organo-minéral (Mésofaune &amp; Microfaune)</text>
+<text fill="#fde68a" font-size="13" font-weight="bold" opacity="0.9" x="14" y="392">Horizon B &amp; Rhizosphère : Micro-organismes (&lt; 0,05 mm) &amp; galeries</text>
+</svg>
+<!-- Conteneur des 21 organismes SVG anatomiques -->
+<div class="absolute inset-0" id="organisms-layer"></div>
+<!-- Cercle Loupe Optique Interactive avec agrandissement réel du SVG survolé -->
+<div class="hidden absolute w-36 h-36 rounded-full border-4 border-amber-300 bg-slate-950/75 backdrop-blur-sm flex flex-col items-center justify-between p-2 -translate-x-1/2 -translate-y-1/2 z-20 overflow-hidden" id="magnifying-lens">
+<span class="text-[9px] font-mono font-bold bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded z-10" id="lens-mag-label">LOUPE ×10</span>
+<div class="w-20 h-20 flex items-center justify-center" id="lens-zoom-svg">
+<div class="w-5 h-[1px] bg-amber-300/60"></div>
+</div>
+<span class="text-[9px] font-mono bg-slate-900/90 text-amber-200 px-1.5 rounded z-10" id="lens-scale-label">Survolez un taxon</span>
+</div>
+</div>
+<!-- Fiche d'identité taxonomique et anatomique dynamique (5 cols) -->
+<div class="lg:col-span-5 flex flex-col justify-between bg-slate-50 rounded-2xl border border-slate-200 p-4 sm:p-5">
+<div class="space-y-3" id="specimen-card">
+<div class="flex items-center justify-between border-b border-slate-200 pb-3 gap-3">
+<div>
+<div class="flex flex-wrap items-center gap-1.5">
+<span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-200 text-slate-700" id="spec-category-badge">
+                                                En attente d'observation
+                                            </span>
+<span class="inline-block px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-slate-100 text-slate-600 border border-slate-200" id="spec-taxon-badge">
+                                                Taxonomie
+                                            </span>
+</div>
+<h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1" id="spec-name">
+                                            Survolez un organisme avec la loupe
+                                        </h3>
+<p class="text-xs font-semibold text-emerald-700 mt-0.5" id="spec-function"></p>
+</div>
+<!-- Schéma SVG anatomique haute définition agrandi -->
+<div class="w-20 h-20 rounded-2xl bg-white border-2 border-slate-200 flex items-center justify-center shadow-sm p-1.5 shrink-0" id="spec-icon-preview">
+<svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="11" cy="11" r="7"></circle>
+<path d="M20 20l-3.5-3.5" stroke-linecap="round"></path>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="bg-white p-2.5 rounded-xl border border-slate-200">
+<span class="text-slate-400 font-semibold block">Taille réelle</span>
+<span class="text-slate-900 font-bold text-xs sm:text-sm mt-0.5 block" id="spec-size">—</span>
+</div>
+<div class="bg-white p-2.5 rounded-xl border border-slate-200">
+<span class="text-slate-400 font-semibold block">Régime trophique</span>
+<span class="text-slate-900 font-bold text-xs sm:text-sm mt-0.5 block" id="spec-trophic">—</span>
+</div>
+<div class="bg-white p-2.5 rounded-xl border border-slate-200">
+<span class="text-slate-400 font-semibold block">Habitat dans le profil</span>
+<span class="text-slate-800 font-semibold text-xs mt-0.5 block leading-snug" id="spec-habitat">—</span>
+</div>
+<div class="bg-white p-2.5 rounded-xl border border-slate-200">
+<span class="text-slate-400 font-semibold block">Abondance</span>
+<span class="text-slate-800 font-semibold text-xs mt-0.5 block leading-snug" id="spec-abundance">—</span>
+</div>
+</div>
+<!-- Échelle logarithmique des tailles du vivant du sol -->
+<div class="bg-white p-2.5 rounded-xl border border-slate-200">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-1.5">Position sur l’échelle de taille (logarithmique)</span>
+<div class="relative h-3 rounded-full border border-slate-200 overflow-visible" style="background:linear-gradient(to right,#bbf7d0 0%,#bbf7d0 34%,#bae6fd 34%,#bae6fd 46%,#fde68a 46%,#fde68a 72%,#fdba74 72%,#fdba74 100%)">
+<div class="absolute -top-0.5 h-4 rounded-full border-2 border-slate-900 bg-slate-900/25 transition-all duration-300" id="spec-scale-marker" style="left:0%;width:0%"></div>
+</div>
+<div class="relative h-4 mt-0.5 text-[9px] font-semibold text-slate-500">
+<span class="absolute left-0">1 µm</span>
+<span class="absolute -translate-x-1/2" style="left:34%">0,05 mm</span>
+<span class="absolute -translate-x-1/2" style="left:46%">0,2 mm</span>
+<span class="absolute -translate-x-1/2" style="left:72%">4 mm</span>
+<span class="absolute right-0">100 mm</span>
+</div>
+<div class="flex text-[9px] font-bold mt-0.5">
+<span class="text-emerald-700" style="width:34%">Micro-organismes</span>
+<span class="text-sky-700" style="width:12%">Micro.</span>
+<span class="text-amber-700" style="width:26%">Mésofaune</span>
+<span class="text-orange-700 text-right" style="width:28%">Macrofaune</span>
+</div>
+</div>
+<div class="bg-sky-50/90 p-3 rounded-xl border border-sky-200 space-y-1">
+<span class="text-[11px] font-bold uppercase tracking-wider text-sky-900">Critères morphologiques d'identification</span>
+<p class="text-xs text-slate-800 leading-relaxed font-medium" id="spec-morphology">
+                                        Nombre de pattes, présence ou absence d'antennes, segmentation du corps (tagmes) et structures caractéristiques visibles à la loupe.
+                                    </p>
+</div>
+<div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1">
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Rôle agro-écologique dans le sol</span>
+<p class="text-xs text-slate-700 leading-relaxed" id="spec-role">
+                                        Déplacez la loupe sur le profil de sol à gauche ou cliquez sur un des 21 taxons pour analyser son anatomie et sa fonction.
+                                    </p>
+</div>
+<div class="bg-amber-50/80 p-2.5 rounded-xl border border-amber-200 space-y-0.5">
+<span class="text-[11px] font-bold uppercase tracking-wider text-amber-800">Sensibilité aux menaces du sol</span>
+<p class="text-xs text-slate-700 leading-relaxed" id="spec-threat">
+                                        Impact du travail du sol, de la couverture végétale et de la teneur en matière organique.
+                                    </p>
+</div>
+<div class="bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200 space-y-0.5">
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-800">Leviers agronomiques favorables</span>
+<p class="text-xs text-slate-700 leading-relaxed" id="spec-levers">
+                                        Pratiques qui favorisent ce taxon : couverture du sol, apports organiques, travail du sol réduit.
+                                    </p>
+</div>
+<div class="bg-rose-50/80 p-2.5 rounded-xl border border-rose-200 space-y-0.5">
+<span class="text-[11px] font-bold uppercase tracking-wider text-rose-800">Ne pas confondre avec…</span>
+<p class="text-xs text-slate-700 leading-relaxed" id="spec-confusion">
+                                        Le critère décisif pour distinguer ce taxon d’un groupe voisin apparaîtra ici.
+                                    </p>
+</div>
+<div class="bg-violet-50/80 p-2.5 rounded-xl border border-violet-200 space-y-0.5">
+<span class="text-[11px] font-bold uppercase tracking-wider text-violet-800">Le saviez-vous ?</span>
+<p class="text-xs text-slate-700 leading-relaxed" id="spec-fact">
+                                        Une particularité biologique remarquable de l’organisme observé.
+                                    </p>
+</div>
+</div>
+<!-- Checklist rapide des 21 taxons -->
+<div class="mt-3 pt-2.5 border-t border-slate-200">
+<p class="text-[10px] font-bold text-slate-500 uppercase mb-1.5">Checklist des 21 taxons du diaporama Pro1B :</p>
+<div class="flex flex-wrap gap-1 max-h-24 overflow-y-auto" id="specimen-checklist"></div>
+</div>
+</div>
+</div>
+<!-- Mini-Quiz d'identification morphologique sous la loupe -->
+<div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 border border-slate-700 space-y-3">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div>
+<span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Défi d'observation taxonomique</span>
+<h3 class="text-sm sm:text-base font-bold">Reconnaître l'organisme à partir de ses critères morphologiques</h3>
+</div>
+<span class="text-xs font-bold bg-white/10 border border-white/20 px-3 py-1 rounded-full text-emerald-300" id="morpho-quiz-score">
+                                Défi : 0 / 4 validés
+                            </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="morpho-quiz-grid"></div>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Corrigé du défi d’observation taxonomique</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><table><thead><tr><th>Item</th><th>Réponse attendue</th><th>Indices discriminants à expliciter</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>Collembole</strong></td><td>Six pattes, antennes, furca repliée sous l’abdomen ; la furca permet le saut. Mésofaune.</td></tr>
+<tr><td>2</td><td><strong>Acarien oribate</strong></td><td>Quatre paires de pattes (huit), absence d’antennes, corps globuleux ; mésofaune.</td></tr>
+<tr><td>3</td><td><strong>Chilopode (lithobie)</strong></td><td>Corps aplati, une paire de pattes par segment et forcipules venimeuses ; prédateur de la macrofaune.</td></tr>
+<tr><td>4</td><td><strong>Champignons (mycélium)</strong></td><td>Hyphes filamenteux, dégradation de composés résistants comme la lignine et formation de mycorhizes ; réseaux sensibles au labour.</td></tr>
+</tbody></table>
+<p><strong>Point de vigilance :</strong> ne pas confondre diplopodes (deux paires de pattes par segment apparent, détritivores) et chilopodes (une paire, prédateurs). Faire justifier chaque réponse par au moins deux caractères observables.</p></div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- ============================================================= -->
+<!-- PARTIE C : ATELIER 2 — SIMULATEUR D'ITINÉRAIRE TECHNIQUE      -->
+<!-- ============================================================= -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-emerald-900 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Étape 2 • Atelier Interactif 2</span>
+<h2 class="text-lg sm:text-xl font-bold">Simulateur Agronomique : Impact des pratiques sur la biomasse et la matière organique</h2>
+</div>
+<button class="text-xs bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-lg font-semibold transition" onclick="resetSimulator()">
+                        Réinitialiser (Parcelle intensive)
+                    </button>
+</div>
+<div class="p-5 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Contrôles des 4 leviers (5 cols) -->
+<div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
+<p class="text-xs text-slate-600">
+<strong>Situation de départ :</strong> Parcelle de grandes cultures intensives (<em>MO = 1,8 %</em>, <em>ADN = 6,5 µg/g</em>, profil fortement bactério-dominé). Testez l'effet combiné des leviers sur 5 campagnes :
+                        </p>
+<!-- Levier 1 : Couverture du sol -->
+<div class="space-y-1">
+<label class="block text-xs font-bold text-slate-800" for="sim-cover">1. Couverture du sol en interculture</label>
+<select class="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs font-medium text-slate-800" id="sim-cover" onchange="updateSimulator()">
+<option value="0">Sol nu hivernal (exportateur / non couvert)</option>
+<option value="1">Couvert végétal simple (moutarde / avoine)</option>
+<option value="2">Couvert multi-espèces permanent (légumineuses + graminées)</option>
+</select>
+</div>
+<!-- Levier 2 : Travail du sol -->
+<div class="space-y-1">
+<label class="block text-xs font-bold text-slate-800" for="sim-tillage">2. Intensité du travail du sol</label>
+<select class="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs font-medium text-slate-800" id="sim-tillage" onchange="updateSimulator()">
+<option value="0">Labour profond annuel systématique (sol perturbé)</option>
+<option value="1">Techniques Culturales Simplifiées (travail superficiel)</option>
+<option value="2">Semis direct sous couvert (perturbation minimale)</option>
+</select>
+</div>
+<!-- Levier 3 : Restitution de MO -->
+<div class="space-y-1">
+<label class="block text-xs font-bold text-slate-800" for="sim-om">3. Gestion des débris végétaux &amp; apports organiques</label>
+<select class="w-full rounded-lg border border-slate-300 bg-white p-2 text-xs font-medium text-slate-800" id="sim-om" onchange="updateSimulator()">
+<option value="0">Exportation des pailles sans restitution organique</option>
+<option value="1">Restitution systématique des résidus de récolte</option>
+<option value="2">Restitution des résidus + apport de fumier / compost</option>
+</select>
+</div>
+<!-- Levier 4 : Dose d'engrais azotés minéraux -->
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-bold text-slate-800">
+<label for="sim-n">4. Engrais azotés minéraux de synthèse</label>
+<span class="text-sky-700 font-mono" id="sim-n-val">190 kg N/ha</span>
+</div>
+<input class="w-full accent-emerald-600 cursor-pointer" id="sim-n" max="220" min="40" oninput="updateSimulator()" step="10" type="range" value="190"/>
+<div class="flex justify-between text-[10px] text-slate-400">
+<span>40 uN (raisonné)</span>
+<span>130 uN</span>
+<span>220 uN (excès)</span>
+</div>
+</div>
+</div>
+<!-- Résultats calculés en direct (7 cols) -->
+<div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+<!-- Indicateur 1 : ADN microbien & Bactéries/g -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+<span class="text-xs font-semibold text-slate-500">Biomasse microbienne (RMQS)</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-extrabold text-emerald-700" id="res-dna">6,5 µg/g</span>
+<span class="text-xs font-mono font-semibold text-slate-600" id="res-bact-count">(≈ 1,2 Md bactéries/g)</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full mt-2.5 overflow-hidden">
+<div class="bg-emerald-600 h-full transition-all duration-300" id="bar-dna" style="width: 35%"></div>
+</div>
+</div>
+<!-- Indicateur 2 : Taux de Matière Organique -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+<span class="text-xs font-semibold text-slate-500">Taux de Matière Organique projeté</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-extrabold text-amber-800" id="res-mo">1,8 %</span>
+<span class="text-xs font-semibold text-amber-700" id="res-mo-status">Niveau faible (type plaine)</span>
+</div>
+<div class="w-full bg-slate-200 h-2 rounded-full mt-2.5 overflow-hidden">
+<div class="bg-amber-600 h-full transition-all duration-300" id="bar-mo" style="width: 32%"></div>
+</div>
+</div>
+<!-- Indicateur 3 : Équilibre Bactéries / Champignons -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+<span class="text-xs font-semibold text-slate-500">Équilibre Bactéries / Champignons</span>
+<div class="flex items-center justify-between text-xs font-bold mt-1.5">
+<span class="text-amber-700" id="res-bact-pct">Bactéries : 76 %</span>
+<span class="text-emerald-700" id="res-fungi-pct">Champignons : 14 %</span>
+</div>
+<div class="w-full h-3 rounded-full mt-2 overflow-hidden flex bg-slate-200">
+<div class="bg-amber-500 h-full transition-all duration-300" id="bar-bact" style="width: 76%"></div>
+<div class="bg-emerald-600 h-full transition-all duration-300" id="bar-fungi" style="width: 14%"></div>
+<div class="bg-slate-400 h-full flex-1" title="Archées &amp; Protistes (~10%)"></div>
+</div>
+<p class="text-[11px] text-slate-500 mt-1.5" id="res-ratio-note">Profil fortement bactério-dominé (sol perturbé).</p>
+</div>
+<!-- Indicateur 4 : Coût énergétique & Pollution des eaux -->
+<div class="p-4 rounded-xl border border-slate-200 bg-white shadow-sm space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="font-semibold text-slate-500">Coût énergétique synthèse N :</span>
+<span class="px-2 py-0.5 rounded font-bold bg-red-100 text-red-800" id="res-energy">Très élevé</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="font-semibold text-slate-500">Risque pollution des eaux :</span>
+<span class="px-2 py-0.5 rounded font-bold bg-red-100 text-red-800" id="res-water">Élevé (lixiviation)</span>
+</div>
+<div class="pt-1 border-t border-slate-100 flex justify-between items-center">
+<span class="text-xs font-bold text-slate-700">Indice de vie du sol :</span>
+<span class="text-base font-extrabold text-emerald-700" id="res-health-score">28 / 100</span>
+</div>
+</div>
+</div>
+<!-- Diagnostic dynamique commenté -->
+<div class="rounded-xl bg-amber-50 border border-amber-200 p-4 text-xs sm:text-sm text-amber-950 leading-relaxed" id="sim-feedback">
+<strong>Diagnostic agronomique :</strong> Votre parcelle reste nue en hiver, labourée et privée de restitutions organiques. La biomasse fongique est effondrée (14 %) et la forte dose d'engrais minéraux entraîne un coût énergétique élevé ainsi qu'un risque majeur de pollution des eaux souterraines et de surface.
+                        </div>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Guide enseignant — exploiter le simulateur sans surinterpréter</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><p><strong>Message central :</strong> le simulateur est un modèle pédagogique comparatif sur cinq campagnes. Il sert à faire raisonner sur les effets combinés des pratiques, et non à prédire une mesure réelle de parcelle.</p>
+<ul>
+<li>La couverture, la réduction du travail du sol et les apports organiques augmentent les indicateurs simulés de MO et de biomasse microbienne.</li>
+<li>Une dose élevée d’azote minéral augmente le coût énergétique indiqué et peut accroître le risque de pollution, particulièrement si le sol est nu.</li>
+<li>Faire comparer d’abord la situation initiale (parcelle intensive) puis un scénario où les trois leviers agronomiques sont améliorés et la fertilisation ajustée.</li>
+</ul>
+<p><strong>Débrief :</strong> demander aux élèves quel levier agit sur le carbone du sol, lequel protège les habitats biologiques et pourquoi une fertilisation minérale ne remplace pas les apports de matière organique.</p>
+<p><strong>Limite scientifique à signaler :</strong> les formules, seuils et scores du simulateur sont des coefficients simplifiés construits pour l’activité. Les résultats dépendent des valeurs choisies et ne constituent ni un diagnostic RMQS, ni une recommandation de dose d’azote.</p></div>
+</div>
+</div>
+</aside>
+</div>
+
+<div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+<button class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition" onclick="selectStep(3)">
+<span>Passer à l'Étape 3 (Fiche de synthèse)</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+</section>
+<!-- ================================================================= -->
+<!-- ÉTAPE 3 : FICHE DE SYNTHÈSE DU COURS À COMPLÉTER (15 min)         -->
+<!-- ================================================================= -->
+<section class="step-section hidden space-y-6" id="step-3">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-slate-800 px-6 py-5 text-white flex flex-wrap items-center justify-between gap-3">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Étape 3 / 4 • Durée conseillée : 15 min</span>
+<h2 class="text-xl font-bold mt-1">Fiche de synthèse du cours Pro1B à compléter</h2>
+<p class="text-xs sm:text-sm text-slate-300 mt-0.5">
+                            Rédigez votre trace écrite structurée à partir des documents et des ateliers. Elle sera intégrée à votre copie PDF finale.
+                        </p>
+</div>
+<button class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm shadow transition" id="btn-lock-synthesis" onclick="toggleLockSynthesis()">
+<span id="synth-lock-icon">🔓</span>
+<span id="synth-lock-text">Verrouiller ma fiche</span>
+</button>
+</div>
+<div class="p-6 space-y-6">
+<!-- Axe I -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-lg" for="synth-1">
+                            I. La biodiversité des sols et le phénomène d'homogénéisation biotique
+                        </label>
+<p class="text-xs text-slate-500">
+                            Rappelez la part de la biodiversité mondiale dans les sols, les 4 grands groupes de taille (micro-organismes, microfaune, mésofaune, macrofaune avec exemples) et la définition de l'homogénéisation biotique.
+                        </p>
+<textarea class="synth-field w-full rounded-xl border border-slate-300 p-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500" id="synth-1" placeholder="Complétez la partie I de votre cours..." rows="4"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-xl p-3 text-xs text-amber-950">
+<strong>Trace écrite attendue (I) :</strong> Un quart (25 %) de la biodiversité mondiale vit dans les sols (10⁸ à 10⁹ bactéries/g). Elle regroupe les micro-organismes (bactéries, champignons, archées, protozoaires, micro-algues), la microfaune (&lt; 0,2 mm : nématodes, tardigrades, rotifères), la mésofaune (0,2–4 mm : collemboles, acariens, enchytréides) et la macrofaune (4–80 mm : lombrics, coléoptères, diplopodes, isopodes). L'intensification des usages provoque une homogénéisation biotique : disparition des espèces endémiques au profit des mêmes espèces banales partout.
+                        </div>
+</div>
+<!-- Axe II -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-lg" for="synth-2">
+                            II. Répartition de la matière organique et de la biomasse microbienne en France (RMQS / Agreste)
+                        </label>
+<p class="text-xs text-slate-500">
+                            Comparez les zones de grandes cultures intensives (Beauce, Champagne) et les zones de prairies permanentes / élevage (Bretagne, Massif central) en termes de taux de MO, quantité d'ADN et ratio bactéries/champignons.
+                        </p>
+<textarea class="synth-field w-full rounded-xl border border-slate-300 p-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500" id="synth-2" placeholder="Complétez la partie II de votre cours..." rows="4"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-xl p-3 text-xs text-amber-950">
+<strong>Trace écrite attendue (II) :</strong> Les grandes cultures intensives présentent les taux de MO les plus bas (&lt; 1,7–2,2 %) et une biomasse microbienne limitée (&lt; 6–9 µg ADN/g, soit &lt; 1 à 2 Md bactéries/g), fortement bactério-dominée (65–80 % bactéries, 10–20 % champignons). À l'inverse, les prairies permanentes et zones d'élevage entretiennent des sols riches en MO (&gt; 3,4–4,3 %) avec une biomasse microbienne dense (11 à &gt; 14 µg ADN/g, soit 2,5 à +3 Md/g) et un équilibre bactéries (40–55 %) / champignons (35–50 %).
+                        </div>
+</div>
+<!-- Axe III -->
+<div class="space-y-2">
+<label class="block text-sm font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-lg" for="synth-3">
+                            III. Chute de la matière organique, limites des engrais minéraux et règles de préservation
+                        </label>
+<p class="text-xs text-slate-500">
+                            Expliquez l'origine de la MO, les deux inconvénients majeurs des engrais azotés minéraux et énoncez la règle d'or de préservation biologique des sols.
+                        </p>
+<textarea class="synth-field w-full rounded-xl border border-slate-300 p-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500" id="synth-3" placeholder="Complétez la partie III de votre cours..." rows="4"></textarea>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-xl p-3 text-xs text-amber-950">
+<strong>Trace écrite attendue (III) :</strong> La MO provient de la transformation des débris végétaux par les organismes du sol. Les rotations intensives épuisent les sols. Les engrais azotés minéraux compensent temporairement le rendement mais leur synthèse chimique est très énergivore et leur excès pollue les eaux souterraines et de surface. Règle d'or : plus un sol est couvert, alimenté en matière organique et peu perturbé, plus il abrite de vie.
+                        </div>
+</div>
+
+<div class="flex justify-end pt-2">
+<button class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2.5 rounded-xl shadow transition" onclick="selectStep(4)">
+<span>Passer à l'Étape 4 (Bilan Flash &amp; Export PDF)</span>
+<div class="lg:col-span-5 flex flex-col justify-between bg-slate-50 rounded-2xl border border-slate-200 p-5">
+<div class="text-xs space-y-2">
+<p class="font-bold uppercase tracking-wider text-slate-500">Synthèse des ateliers interactifs</p>
+</div>
+</div>
+</button></div>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Grille de correction — fiche de synthèse</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><table><thead><tr><th>Partie</th><th>Éléments indispensables</th><th>Points de vigilance</th></tr></thead><tbody>
+<tr><td><strong>I. Biodiversité</strong></td><td>25 % ; catégories de faune selon les tailles ; exemples d’organismes ; définition de l’homogénéisation biotique.</td><td>Ne pas confondre les classes de taille ; illustrer la notion par le recul des espèces spécialisées.</td></tr>
+<tr><td><strong>II. MO et biomasse</strong></td><td>Opposition grandes cultures intensives / prairies permanentes ; valeurs de MO et d’ADN ; équilibre bactéries/champignons.</td><td>La conversion ADN → cellules bactériennes reste approximative.</td></tr>
+<tr><td><strong>III. Menaces et solutions</strong></td><td>Origine biologique de la MO ; limites énergétiques et environnementales des engrais azotés ; sol couvert, nourri et peu perturbé.</td><td>Un engrais minéral nourrit la plante mais ne reconstitue pas directement le stock de carbone organique.</td></tr>
+</tbody></table>
+<p><strong>Évaluation conseillée :</strong> 3 points par partie (exactitude, vocabulaire scientifique, exemples/données) + 1 point pour la cohérence et la qualité de la rédaction. Adapter le barème au temps et aux exigences de la classe.</p></div>
+</div>
+</div>
+</aside>
+</div></section>
+<!-- ================================================================= -->
+<!-- ÉTAPE 4 : AUTO-ÉVALUATION BILAN FLASH & EXPORT COPIE PDF (5 min)  -->
+<!-- ================================================================= -->
+<section class="step-section hidden space-y-6" id="step-4">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-gradient-to-r from-slate-900 to-emerald-900 px-6 py-5 text-white flex flex-wrap items-center justify-between gap-3">
+<div>
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Étape 4 / 4 • Durée conseillée : 5 min</span>
+<h2 class="text-xl font-bold mt-1">Auto-évaluation « Bilan Flash » &amp; Exportation de votre copie</h2>
+</div>
+<div class="bg-white/15 border border-white/25 px-4 py-2 rounded-xl text-sm font-extrabold" id="quiz-score-badge">
+                        Score : — / 6
+                    </div>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-5" id="quiz-container"></div>
+<div class="teacher-solution bg-amber-50 border border-amber-300 rounded-xl p-4 text-xs text-amber-950 space-y-2">
+<h3 class="font-extrabold text-sm text-amber-900">Corrigé enseignant — Bilan Flash</h3>
+<ol class="list-decimal pl-5 space-y-1.5">
+<li><strong>Q1 : B.</strong> Environ 25 % (un quart) de la biodiversité mondiale vit dans les sols.</li>
+<li><strong>Q2 : B.</strong> Mésofaune (0,2 à 4 mm) : collemboles et acariens.</li>
+<li><strong>Q3 : B.</strong> Les mêmes espèces généralistes se retrouvent partout tandis que les espèces endémiques spécialisées déclinent.</li>
+<li><strong>Q4 : B.</strong> Prairies permanentes et zones d'élevage (Bretagne, Massif central).</li>
+<li><strong>Q5 : B.</strong> La MO provient de la transformation des débris végétaux par les organismes du sol.</li>
+<li><strong>Q6 : A.</strong> Fabrication très énergivore et risque de pollution des eaux en cas d'excès.</li>
+</ol>
+<p class="text-amber-900"><strong>Barème :</strong> 1 point par bonne réponse, soit 6 points au total.</p>
+</div><aside class="teacher-solution teacher-guide-note bg-amber-50 border-l-4 border-amber-500 rounded-r-xl p-4 sm:p-5 shadow-sm space-y-2">
+<div class="flex items-start gap-3">
+<span aria-hidden="true" class="text-amber-600 text-lg">✦</span>
+<div class="min-w-0 flex-1">
+<h3 class="font-bold text-amber-950 text-sm sm:text-base">Justifications attendues — Bilan Flash</h3>
+<div class="text-amber-950 text-xs sm:text-sm leading-relaxed"><ol>
+<li><strong>B — 25 % :</strong> retenir l’ordre de grandeur « un quart ».</li>
+<li><strong>B — Mésofaune :</strong> collemboles et acariens mesurent ici 0,2 à 4 mm.</li>
+<li><strong>B — Homogénéisation :</strong> les espèces généralistes deviennent largement réparties tandis que les espèces endémiques spécialisées régressent.</li>
+<li><strong>B — Prairies permanentes :</strong> elles sont associées dans le cours à une MO et une biomasse microbienne plus élevées et à un meilleur équilibre bactéries/champignons.</li>
+<li><strong>B — Débris végétaux :</strong> la MO du sol résulte de leur transformation par les organismes du sol.</li>
+<li><strong>A — Engrais azotés :</strong> fabrication énergivore et risque de pollution des eaux en cas d’excès.</li>
+</ol><p><strong>Barème :</strong> 1 point par réponse exacte, 6 points au total. Pour la remédiation, demander à l’élève de reformuler la raison de son erreur plutôt que de mémoriser uniquement la lettre.</p></div>
+</div>
+</div>
+</aside>
+<div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200">
+<button class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl shadow transition" onclick="gradeQuiz()">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Valider et corriger mon Bilan Flash</span>
+</button>
+<button class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl shadow transition" onclick="prepareAndPrint()">
+<svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span>Imprimer / Exporter ma copie élève en PDF</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- ===================================================================== -->
+<!-- PIED DE PAGE AVEC RÉFÉRENCES ET ACCÈS MODE ENSEIGNANT                 -->
+<!-- ===================================================================== -->
+<footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-5 px-4 sm:px-6 text-xs no-print">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="space-y-1">
+<p class="text-slate-200 font-semibold">
+                    Références scientifiques : Cours Module Pro1B – 1ère Bac Pro CGEA (2025) • Gis Sol – Programme ANR Ecomic-RMQS (2010) ; IGN Geofla® (2006) ; Dequiedt et al. (2010/2011) • Agreste (2001, RA 2000) • Swift et al. (1979) • FAO et al. (2020).
+                </p>
+<p class="text-slate-500">
+                    Application pédagogique interactive — Sauvegarde locale automatique dans le navigateur.
+                </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="text-sky-400 hover:text-sky-300 underline font-medium" onclick="openBiblioModal()">
+                    Bibliographie détaillée
+                </button>
+<span class="text-slate-700">|</span>
+<button class="text-slate-400 hover:text-amber-300 font-medium transition" onclick="openTeacherModal()">
+                    🔒 Mode Enseignant
+                </button>
+</div>
+</div>
+</footer>
+<!-- ===================================================================== -->
+<!-- MODALE DE DÉVERROUILLAGE DES ÉTAPES / MODE ENSEIGNANT                 -->
+<!-- ===================================================================== -->
+<div class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 no-print" id="password-modal">
+<div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg">🔐</span>
+<div>
+<h3 class="text-base font-bold text-slate-900" id="modal-title">Étape verrouillée</h3>
+<p class="text-xs text-slate-500" id="modal-subtitle">Saisissez le mot de passe communiqué par votre enseignant.</p>
+</div>
+</div>
+<button class="text-slate-400 hover:text-slate-700 text-xl font-bold px-2" onclick="closePasswordModal()">×</button>
+</div>
+<div class="space-y-2">
+<input class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-mono uppercase tracking-widest text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:outline-none" id="modal-password-input" placeholder="Mot de passe..." type="password"/>
+<p class="hidden text-xs font-semibold text-red-600" id="modal-error">
+                    Mot de passe incorrect. Vérifiez l'orthographe (majuscules/chiffres).
+                </p>
+</div>
+<div class="flex justify-end gap-2 pt-2">
+<button class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100" onclick="closePasswordModal()">
+                    Annuler
+                </button>
+<button class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow" onclick="submitPassword()">
+                    Déverrouiller
+                </button>
+</div>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- MODALE BIBLIOGRAPHIE & SOURCES SCIENTIFIQUES                          -->
+<!-- ===================================================================== -->
+<div class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 no-print" id="biblio-modal">
+<div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl border border-slate-200 space-y-4">
+<div class="flex items-center justify-between border-b border-slate-200 pb-3">
+<h3 class="text-lg font-extrabold text-slate-900">Sources &amp; Références Bibliographiques du Cours</h3>
+<button class="text-slate-400 hover:text-slate-700 text-2xl font-bold px-2" onclick="closeBiblioModal()">×</button>
+</div>
+<ol class="list-decimal pl-5 space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+<li>
+<strong>Support pédagogique de référence :</strong> Cours Module Pro1B – Première Bac Pro CGEA, <em>« Partie 1 : Qu’est-ce que le sol — Section 5 : Les menaces du sol »</em>, édition 2025.
+                </li>
+<li>
+<strong>Cartographie nationale de la biomasse microbienne :</strong> <em>Gis Sol – Programme ANR Ecomic-RMQS</em> (Réseau de Mesures de la Qualité des Sols), 2010 ; fond cartographique <em>IGN, Geofla®</em>, 2006.
+                </li>
+<li>
+<strong>Publication scientifique sur l'ADN microbien des sols français :</strong> Dequiedt, S., Saby, N. P. A., Lelievre, M., Jolivet, C., Thioulouse, J., Toutain, B., Arrouays, D., Bispo, A., Lemanceau, P., &amp; Ranjard, L. (2010 / 2011). <em>Biogeographical patterns of soil molecular microbial biomass as influenced by soil characteristics and management</em>. Global Ecology and Biogeography, 20(4), 641–652.
+                </li>
+<li>
+<strong>Données d'occupation des sols et systèmes agricoles :</strong> <em>Agreste</em> (2001) – Ministère de l'Agriculture et de la Pêche, <em>Recensement Agricole 2000</em> (carte des orientations technico-économiques des exploitations agricoles : grandes cultures, élevage bovin-herbivore, polyculture).
+                </li>
+<li>
+<strong>Classification fonctionnelle de la faune du sol :</strong> Swift, M. J., Heal, O. W., &amp; Anderson, J. M. (1979). <em>Decomposition in Terrestrial Ecosystems</em>. Blackwell Scientific Publications (classification par gamme de taille : microflore, microfaune &lt; 0,2 mm, mésofaune 0,2–4 mm, macrofaune &gt; 4 mm).
+                </li>
+<li>
+<strong>Synthèse internationale sur la biodiversité des sols :</strong> FAO, ITPS, GSBI, SCBD &amp; EC (2020). <em>State of knowledge of soil biodiversity – Status, challenges and potentialities</em>. Rome, FAO (confirmation qu'environ 25 % de la biodiversité mondiale réside dans les sols).
+                </li>
+</ol>
+<div class="flex justify-end pt-3 border-t border-slate-200">
+<button class="px-5 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800" onclick="closeBiblioModal()">
+                    Fermer
+                </button>
+</div>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- RAPPORT D'IMPRESSION PDF PROPRE (@media print)                        -->
+<!-- ===================================================================== -->
+<div class="hidden p-6 space-y-6 text-black" id="print-report">
+<div class="border-b-2 border-black pb-4 flex justify-between items-start">
+<div>
+<p class="text-xs font-bold uppercase">Baccalauréat Professionnel CGEA • Module Pro1B</p>
+<h1 class="text-xl font-bold mt-1">Les menaces pesant sur les sols : Biodiversité &amp; Matière Organique</h1>
+<p class="text-sm mt-1"><strong>Élève :</strong> <span id="print-student-name">Non renseigné</span></p>
+</div>
+<div class="text-right text-xs space-y-1">
+<p><strong>Date :</strong> <span id="print-date"></span></p>
+<p class="text-sm font-bold border border-black px-2 py-1 mt-1">Bilan Flash : <span id="print-score">— / 6</span></p>
+</div>
+</div>
+<div class="print-break space-y-1">
+<h2 class="font-bold text-sm uppercase bg-gray-100 p-1.5 border border-gray-300">1. Hypothèses initiales (Mise en situation EARL des Deux Terroirs)</h2>
+<p class="text-xs whitespace-pre-wrap p-2 border border-gray-300 min-h-[40px]" id="print-hypothesis"></p>
+</div>
+<div class="print-break space-y-2">
+<h2 class="font-bold text-sm uppercase bg-gray-100 p-1.5 border border-gray-300">2. Exploitation documentaire (Docs 1 à 3)</h2>
+<div class="text-xs space-y-2">
+<p><strong>Q1 (Homogénéisation biotique &amp; biodiversité mondiale) :</strong> <span id="print-q1"></span></p>
+<p><strong>Q2 (Comparaison RMQS Grandes cultures vs Prairies) :</strong> <span id="print-q2"></span></p>
+<p><strong>Q3 (Simplification pédagogique ADN / bactéries) :</strong> <span id="print-q3"></span></p>
+<p><strong>Q4 (Limites des engrais azotés minéraux) :</strong> <span id="print-q4"></span></p>
+<p><strong>Q5 (Conditions favorables à la vie du sol) :</strong> <span id="print-q5"></span></p>
+</div>
+</div>
+<div class="print-break space-y-1">
+<h2 class="font-bold text-sm uppercase bg-gray-100 p-1.5 border border-gray-300">3. Résultats des ateliers interactifs</h2>
+<p class="text-xs p-2 border border-gray-300" id="print-workshops"></p>
+</div>
+<div class="print-break space-y-2">
+<h2 class="font-bold text-sm uppercase bg-gray-100 p-1.5 border border-gray-300">4. Fiche de synthèse du cours Pro1B</h2>
+<div class="text-xs space-y-2">
+<div>
+<p class="font-bold">I. Biodiversité des sols et homogénéisation biotique :</p>
+<p class="whitespace-pre-wrap p-1.5 border border-gray-300 min-h-[35px]" id="print-synth-1"></p>
+</div>
+<div>
+<p class="font-bold">II. Répartition de la MO et de la biomasse microbienne en France :</p>
+<p class="whitespace-pre-wrap p-1.5 border border-gray-300 min-h-[35px]" id="print-synth-2"></p>
+</div>
+<div>
+<p class="font-bold">III. Chute de la MO, engrais minéraux et règles de préservation :</p>
+<p class="whitespace-pre-wrap p-1.5 border border-gray-300 min-h-[35px]" id="print-synth-3"></p>
+</div>
+</div>
+</div>
+<div class="text-[10px] text-gray-600 border-t border-gray-400 pt-2">
+            Sources : Cours Pro1B 1ère CGEA (2025) • Gis Sol – ANR Ecomic-RMQS (2010) ; Dequiedt et al. (2010/2011) • Agreste (2001, RA 2000) • Swift et al. (1979) • FAO et al. (2020).
+        </div>
+</div>
+<!-- ===================================================================== -->
+<!-- SCRIPT JAVASCRIPT COMPLET                                             -->
+<!-- ===================================================================== -->
+<script>
+        /* -------------------------------------------------------------------
+         * 1. CONFIGURATION DES MOTS DE PASSE & ÉTAT DE L'APPLICATION
+         * ------------------------------------------------------------------- */
+        const PASSWORDS = {
+            2: 'SOL2025',
+            3: 'HUMUS',
+            4: 'CGEA1',
+            teacher: 'PROF'
+        };
+
+        const STORAGE_KEY = 'pro1b_cgea_menaces_sols_prof_v1';
+
+        let appState = {
+            studentName: '',
+            unlockedSteps: { 1: true, 2: true, 3: true, 4: true },
+            teacherMode: true,
+            synthesisLocked: false,
+            discoveredOrganisms: [],
+            fields: {
+                'input-hypothesis': '',
+                'q1': '',
+                'q2': '',
+                'q3': '',
+                'q4': '',
+                'q5': '',
+                'synth-1': '',
+                'synth-2': '',
+                'synth-3': ''
+            },
+            quizAnswers: {}
+        };
+
+        let pendingUnlockTarget = null; // 2, 3, 4 ou 'teacher'
+
+        /* -------------------------------------------------------------------
+         * 2. BASE DE DONNÉES DES 21 TAXONS & SCHÉMAS SVG ANATOMIQUES FIDÈLES
+         * ------------------------------------------------------------------- */
+        const ORGANISMS_DATA = [
+            // ================= MACROFAUNE (4 mm à 80 mm) =================
+            {
+                id: 'lombric',
+                name: 'Lombric (Ver de terre)',
+                taxon: 'Annelida • Lumbricina',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '40 à 80 mm (et +)',
+                trophic: 'Détritivore / Géophage',
+                x: 27, y: 50,
+                color: '#ea580c',
+                morphology: 'Corps cylindrique allongé divisé en nombreux anneaux (métamères) identiques, avec un renflement glandulaire (clitellum) vers le tiers antérieur. Absence totale de pattes et d’antennes.',
+                role: 'Ingénieur majeur du sol : enfouit la litière, brasse matière organique et minérale (complexe argilo-humique) et creuse des galeries verticales favorisant le drainage et l’aération.',
+                threat: 'Très sensible au labour profond qui détruit ses galeries et l’expose aux prédateurs, ainsi qu’au manque de résidus végétaux en surface.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M12,68 C22,30 42,26 54,48 C66,70 82,66 90,34" fill="none" stroke="#c2410c" stroke-width="11" stroke-linecap="round"/>
+                    <path d="M12,68 C22,30 42,26 54,48 C66,70 82,66 90,34" fill="none" stroke="#fb923c" stroke-width="7" stroke-linecap="round"/>
+                    <!-- Clitellum renflé -->
+                    <path d="M31,33 C37,32 42,35 46,39" fill="none" stroke="#fda4af" stroke-width="13" stroke-linecap="round"/>
+                    <!-- Métamères (anneaux) -->
+                    <path d="M15,57 L22,60 M19,47 L26,51 M25,38 L31,43 M50,41 L45,46 M55,50 L50,55 M61,58 L57,63 M69,62 L67,67 M77,58 L74,63 M83,49 L79,53 M87,40 L83,43" stroke="#7c2d12" stroke-width="1.6"/>
+                    <circle cx="11" cy="69" r="2" fill="#7c2d12"/>
+                </svg>`
+            },
+            {
+                id: 'coleoptere',
+                name: 'Coléoptère (Carabe)',
+                taxon: 'Arthropoda • Insecta • Coleoptera',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '10 à 25 mm',
+                trophic: 'Prédateur / Zoophage',
+                x: 11, y: 18,
+                color: '#ea580c',
+                morphology: 'Insecte à 3 tagmes (tête, thorax, abdomen), 3 paires de pattes articulées (6 pattes), mandibules développées, 1 paire d’antennes filiformes segmentées et ailes antérieures durcies en élytres striés.',
+                role: 'Prédateur auxiliaire majeur des cultures (régule limaces, pucerons et larves ravageuses) et participe à la fragmentation mécanique des débris.',
+                threat: 'Décline fortement en l’absence de couverts permanents ou de bandes enherbées et sous l’effet des traitements insecticides.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Antennes -->
+                    <path d="M44,22 Q34,10 26,8 M56,22 Q66,10 74,8" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Mandibules -->
+                    <path d="M46,23 Q44,17 48,16 M54,23 Q56,17 52,16" fill="none" stroke="#0f172a" stroke-width="2.2"/>
+                    <!-- 3 paires de pattes articulées -->
+                    <path d="M38,38 L22,30 L15,22 M62,38 L78,30 L85,22" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M36,50 L18,52 L12,62 M64,50 L82,52 L88,62" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M38,64 L22,76 L18,90 M62,64 L78,76 L82,90" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Tête & Pronotum -->
+                    <ellipse cx="50" cy="26" rx="8" ry="6" fill="#0f172a"/>
+                    <path d="M37,33 L63,33 L66,44 L34,44 Z" fill="#065f46" stroke="#022c22" stroke-width="1.5"/>
+                    <!-- Élytres striés -->
+                    <path d="M34,44 C32,68 40,84 50,86 C60,84 68,68 66,44 Z" fill="#047857" stroke="#022c22" stroke-width="1.8"/>
+                    <line x1="50" y1="44" x2="50" y2="86" stroke="#022c22" stroke-width="1.8"/>
+                    <path d="M41,47 C40,64 43,76 46,82 M59,47 C60,64 57,76 54,82" fill="none" stroke="#34d399" stroke-width="1.2" opacity="0.7"/>
+                </svg>`
+            },
+            {
+                id: 'diplopode',
+                name: 'Diplopode (Iule)',
+                taxon: 'Arthropoda • Myriapoda • Diplopoda',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '15 à 45 mm',
+                trophic: 'Détritivore saprophage',
+                x: 24, y: 20,
+                color: '#ea580c',
+                morphology: 'Myriapode au corps cylindrique allongé très segmenté, portant 2 paires de pattes courtes insérées sous chaque segment double (diplosegment) et une paire d’antennes courtes.',
+                role: 'Détritivore essentiel : fragmente les feuilles mortes et débris végétaux riches en lignine, augmentant la surface d’attaque pour les champignons et bactéries.',
+                threat: 'Sensible à l’assèchement des sols laissés nus et à l’exportation systématique des résidus de récolte.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Antennes courtes -->
+                    <path d="M16,58 L8,52 M16,62 L8,66" stroke="#292524" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Corps cylindrique arqué -->
+                    <path d="M18,60 C26,34 68,32 84,58" fill="none" stroke="#44403c" stroke-width="13" stroke-linecap="round"/>
+                    <!-- Anneaux et 2 paires de pattes courtes par segment -->
+                    <g stroke="#1c1917" stroke-width="1.5">
+                        <line x1="25" y1="45" x2="29" y2="55"/><line x1="33" y1="39" x2="36" y2="50"/>
+                        <line x1="42" y1="36" x2="43" y2="47"/><line x1="51" y1="35" x2="51" y2="46"/>
+                        <line x1="60" y1="37" x2="58" y2="48"/><line x1="69" y1="41" x2="65" y2="51"/>
+                        <line x1="77" y1="47" x2="72" y2="56"/>
+                        <!-- Doubles pattes ventrales -->
+                        <path d="M27,56 L24,64 M30,55 L28,64 M35,51 L33,60 M38,50 L37,60 M43,48 L42,57 M46,48 L45,57 M51,47 L51,56 M54,48 L54,57 M59,49 L60,58 M62,50 L63,59 M67,52 L69,61 M70,54 L72,62" fill="none"/>
+                    </g>
+                </svg>`
+            },
+            {
+                id: 'chilopode',
+                name: 'Chilopode (Lithobie)',
+                taxon: 'Arthropoda • Myriapoda • Chilopoda',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '15 à 35 mm',
+                trophic: 'Prédateur carnivore',
+                x: 37, y: 18,
+                color: '#ea580c',
+                morphology: 'Myriapode au corps aplati dorso-ventralement, portant 1 seule paire de pattes latérales bien écartées par segment, de longues antennes segmentées et des forcipules venimeuses sous la tête.',
+                role: 'Prédateur actif de la mésofaune et des petits invertébrés ; régule les équilibres biologiques dans la litière.',
+                threat: 'Sensible au tassement des sols (perte des fissures naturelles) et au travail mécanique répété.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Longues antennes -->
+                    <path d="M45,20 Q34,10 24,6 M55,20 Q66,10 76,6" fill="none" stroke="#9a3412" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Forcipules -->
+                    <path d="M46,22 Q43,17 48,16 M54,22 Q57,17 52,16" fill="none" stroke="#7c2d12" stroke-width="2"/>
+                    <!-- 1 paire de pattes latérales par segment -->
+                    <g stroke="#9a3412" stroke-width="2" stroke-linecap="round" fill="none">
+                        <path d="M43,30 L28,24 L22,18"/><path d="M57,30 L72,24 L78,18"/>
+                        <path d="M42,38 L24,36 L18,32"/><path d="M58,38 L76,36 L82,32"/>
+                        <path d="M42,46 L22,46 L16,44"/><path d="M58,46 L78,46 L84,44"/>
+                        <path d="M42,54 L23,56 L17,58"/><path d="M58,54 L77,56 L83,58"/>
+                        <path d="M43,62 L25,67 L19,71"/><path d="M57,62 L75,67 L81,71"/>
+                        <path d="M44,70 L28,78 L23,85"/><path d="M56,70 L72,78 L77,85"/>
+                        <path d="M46,77 L34,88 L30,95"/><path d="M54,77 L66,88 L70,95"/>
+                    </g>
+                    <!-- Tergites aplatis -->
+                    <rect x="44" y="20" width="12" height="7" rx="3" fill="#b45309"/>
+                    <rect x="42" y="27" width="16" height="52" rx="6" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
+                    <path d="M42,34 H58 M42,42 H58 M42,50 H58 M42,58 H58 M42,66 H58 M43,73 H57" stroke="#78350f" stroke-width="1.4"/>
+                </svg>`
+            },
+            {
+                id: 'isopode',
+                name: 'Isopode (Cloporte)',
+                taxon: 'Arthropoda • Crustacea • Isopoda',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '8 à 18 mm',
+                trophic: 'Détritivore décomposeur',
+                x: 50, y: 19,
+                color: '#ea580c',
+                morphology: 'Crustacé terrestre au corps ovale aplati articulé en 7 plaques thoraciques (péréion) suivies d’un abdomen court (pléon), 7 paires de pattes (14 pattes) et 1 paire d’antennes coudées.',
+                role: 'Décomposeur primaire de la matière organique morte (feuilles, bois mort) ; ses déjections enrichissent l’humus en nutriments.',
+                threat: 'Disparaît rapidement lorsque le sol est laissé nu et privé d’abris organiques humides en surface.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Antennes coudées -->
+                    <path d="M43,22 L34,15 L26,17 M57,22 L66,15 L74,17" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+                    <!-- 7 paires de pattes -->
+                    <g stroke="#475569" stroke-width="2" stroke-linecap="round">
+                        <line x1="33" y1="32" x2="23" y2="29"/><line x1="67" y1="32" x2="77" y2="29"/>
+                        <line x1="30" y1="40" x2="20" y2="39"/><line x1="70" y1="40" x2="80" y2="39"/>
+                        <line x1="29" y1="48" x2="19" y2="48"/><line x1="71" y1="48" x2="81" y2="48"/>
+                        <line x1="29" y1="56" x2="19" y2="57"/><line x1="71" y1="56" x2="81" y2="57"/>
+                        <line x1="30" y1="64" x2="21" y2="66"/><line x1="70" y1="64" x2="79" y2="66"/>
+                        <line x1="33" y1="72" x2="24" y2="75"/><line x1="67" y1="72" x2="76" y2="75"/>
+                        <line x1="37" y1="79" x2="29" y2="83"/><line x1="63" y1="79" x2="71" y2="83"/>
+                    </g>
+                    <!-- Carapace ovale à 7 plaques -->
+                    <ellipse cx="50" cy="54" rx="21" ry="31" fill="#64748b" stroke="#1e293b" stroke-width="2"/>
+                    <path d="M33,34 Q50,37 67,34 M30,42 Q50,45 70,42 M29,50 Q50,53 71,50 M29,58 Q50,61 71,58 M31,66 Q50,69 69,66 M34,74 Q50,76 66,74 M39,80 Q50,82 61,80" fill="none" stroke="#1e293b" stroke-width="1.5"/>
+                    <!-- Uropodes postérieurs -->
+                    <path d="M45,84 L42,91 M55,84 L58,91" stroke="#334155" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'gasteropode',
+                name: 'Gastéropode (Escargot / Limace)',
+                taxon: 'Mollusca • Gastropoda',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '12 à 50 mm',
+                trophic: 'Phytophage / Détritivore',
+                x: 63, y: 17,
+                color: '#ea580c',
+                morphology: 'Mollusque au corps mou non segmenté muni d’un pied musculeux ventral, d’une tête portant 2 paires de tentacules rétractiles (oculaires longs et tactiles courts) et d’une coquille spiralée (escargot) ou interne réduite (limace).',
+                role: 'Consomme des végétaux sénescents et des champignons ; sécrète un mucus riche en polysaccharides favorisant l’agrégation des particules du sol.',
+                threat: 'En agriculture simplifiée sans prédateurs auxiliaires (carabes, staphylins), certaines populations de limaces peuvent déséquilibrer les levées.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Pied musculeux -->
+                    <path d="M14,72 C24,68 62,68 78,60 C84,57 88,63 85,70 C80,77 28,78 14,72 Z" fill="#d6d3d1" stroke="#57534e" stroke-width="1.8"/>
+                    <!-- Tentacules céphaliques -->
+                    <path d="M81,60 L88,46 M84,62 L92,50 M85,66 L93,64" stroke="#57534e" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="88" cy="45" r="1.8" fill="#1c1917"/>
+                    <circle cx="92" cy="49" r="1.8" fill="#1c1917"/>
+                    <!-- Coquille spiralée -->
+                    <circle cx="48" cy="48" r="22" fill="#b45309" stroke="#451a03" stroke-width="2"/>
+                    <path d="M48,48 m0,-4 a4,4 0 1,1 -3,2 a8,8 0 1,1 5,5 a13,13 0 1,1 -8,-8" fill="none" stroke="#fef3c7" stroke-width="2" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'larve_insecte',
+                name: 'Larve d’insecte (Mélolonthoïde)',
+                taxon: 'Arthropoda • Insecta (stade larvaire)',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '15 à 40 mm',
+                trophic: 'Rhizophage / Saprophage',
+                x: 76, y: 20,
+                color: '#ea580c',
+                morphology: 'Corps mou arqué en forme de « C » de couleur blanc crème, segmenté, terminé par un abdomen renflé sombre (raster), avec une capsule céphalique brun-orangé sclérifiée et 3 paires de pattes thoraciques.',
+                role: 'Participe au brassage de la matière organique et de la terre fine ; certaines espèces (cétoines) sont exclusivement saprophages et utiles au compostage.',
+                threat: 'Sensible au travail mécanique du sol qui expose les larves aux oiseaux et aux prédateurs.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Corps arqué en C -->
+                    <path d="M36,28 C68,20 82,46 72,70 C64,86 42,84 32,72" fill="none" stroke="#fef3c7" stroke-width="18" stroke-linecap="round"/>
+                    <path d="M36,28 C68,20 82,46 72,70 C64,86 42,84 32,72" fill="none" stroke="#d97706" stroke-width="18" stroke-linecap="round" opacity="0.25"/>
+                    <!-- Plis segmentaires -->
+                    <path d="M48,21 L47,33 M58,24 L54,35 M68,31 L61,40 M75,42 L65,48 M77,54 L66,56 M73,66 L63,63 M64,76 L57,69" stroke="#b45309" stroke-width="1.5"/>
+                    <!-- 3 paires de pattes thoraciques -->
+                    <path d="M36,36 L24,40 M42,41 L28,47 M48,46 L35,54" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+                    <!-- Capsule céphalique sclérifiée -->
+                    <circle cx="32" cy="28" r="8" fill="#b45309" stroke="#451a03" stroke-width="1.5"/>
+                </svg>`
+            },
+            {
+                id: 'arachnide',
+                name: 'Arachnide (Araignée-loup)',
+                taxon: 'Arthropoda • Arachnida • Araneae',
+                group: 'macro',
+                groupLabel: 'Macrofaune',
+                size: '6 à 20 mm',
+                trophic: 'Prédateur carnivore',
+                x: 89, y: 18,
+                color: '#ea580c',
+                morphology: 'Corps divisé en 2 tagmes (céphalothorax et abdomen non segmenté reliés par un pédicelle), 4 paires de pattes locomotrices (8 pattes), chélicères et pédipalpes, SANS antennes.',
+                role: 'Prédateur généraliste régulant les populations d’insectes (cicadelles, pucerons, diptères) à la surface des sols cultivés.',
+                threat: 'Très sensible au labour, au broyage ras et à la suppression des bandes enherbées refuges.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- 4 paires de pattes (8 pattes) -->
+                    <g stroke="#292524" stroke-width="2.2" stroke-linecap="round" fill="none">
+                        <path d="M44,38 L26,22 L14,12"/><path d="M56,38 L74,22 L86,12"/>
+                        <path d="M43,43 L20,36 L10,32"/><path d="M57,43 L80,36 L90,32"/>
+                        <path d="M43,48 L20,54 L10,60"/><path d="M57,48 L80,54 L90,60"/>
+                        <path d="M45,52 L26,72 L16,88"/><path d="M55,52 L74,72 L84,88"/>
+                    </g>
+                    <!-- Pédipalpes (pas d'antennes) -->
+                    <path d="M47,33 L44,25 M53,33 L56,25" stroke="#44403c" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Céphalothorax -->
+                    <ellipse cx="50" cy="43" rx="8" ry="10" fill="#57534e" stroke="#1c1917" stroke-width="1.5"/>
+                    <!-- Abdomen -->
+                    <ellipse cx="50" cy="67" rx="12" ry="15" fill="#78716c" stroke="#1c1917" stroke-width="1.8"/>
+                    <path d="M50,55 L50,78 M44,62 L56,62 M44,70 L56,70" stroke="#292524" stroke-width="1.2"/>
+                </svg>`
+            },
+
+            // ================= MÉSOFAUNE (0,2 mm à 4 mm) =================
+            {
+                id: 'collembole',
+                name: 'Collembole',
+                taxon: 'Arthropoda • Hexapoda • Collembola',
+                group: 'meso',
+                groupLabel: 'Mésofaune',
+                size: '0,5 à 3 mm',
+                trophic: 'Fongivore / Saprophage',
+                x: 14, y: 34,
+                color: '#d97706',
+                morphology: 'Hexapode aptère (6 pattes, sans ailes), antennes courtes à 4 articles, abdomen à 6 segments portant un tube ventral (collophore) et une furca (organe sauteur bifurqué) repliée sous l’abdomen.',
+                role: 'Brouteur de champignons et de bactéries : stimule le renouvellement microbien, dissémine les spores fongiques et accélère l’humification.',
+                threat: 'Indicateur biologique de référence : sa diversité chute avec le tassement et l’intensification culturale (homogénéisation biotique).',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Antennes à 4 articles -->
+                    <path d="M24,46 L14,38 L6,36 M24,52 L14,58 L7,62" fill="none" stroke="#92400e" stroke-width="2.2" stroke-linecap="round"/>
+                    <!-- 3 paires de pattes -->
+                    <path d="M36,56 L32,72 M46,57 L44,74 M56,57 L58,74" stroke="#92400e" stroke-width="2.2" stroke-linecap="round"/>
+                    <!-- Furca (organe sauteur replié sous l'abdomen) -->
+                    <path d="M78,56 L62,68 L50,68" fill="none" stroke="#b45309" stroke-width="2.2" stroke-linecap="round"/>
+                    <!-- Tête, thorax, abdomen à 6 segments -->
+                    <circle cx="28" cy="49" r="7" fill="#d97706" stroke="#78350f" stroke-width="1.5"/>
+                    <ellipse cx="58" cy="48" rx="25" ry="11" fill="#f59e0b" stroke="#78350f" stroke-width="1.8"/>
+                    <path d="M42,38 V58 M51,37 V59 M60,37 V59 M69,39 V57 M76,41 V55" stroke="#78350f" stroke-width="1.3"/>
+                    <circle cx="26" cy="46" r="1.5" fill="#1c1917"/>
+                </svg>`
+            },
+            {
+                id: 'acarien',
+                name: 'Acarien du sol (Oribate)',
+                taxon: 'Arthropoda • Arachnida • Acari',
+                group: 'meso',
+                groupLabel: 'Mésofaune',
+                size: '0,3 à 1,5 mm',
+                trophic: 'Saprophage / Fongivore / Prédateur',
+                x: 32, y: 36,
+                color: '#d97706',
+                morphology: 'Minuscule arachnide au corps globuleux non segmenté (fusion du céphalothorax et de l’abdomen en un idiosoma + pièces buccales antérieures ou gnathosoma), 4 paires de pattes (8 pattes), SANS antennes.',
+                role: 'Extrêmement abondant (jusqu’à 100 000 individus/m² en prairie) : décompose les débris végétaux fins et régule les nématodes et champignons.',
+                threat: 'Très sensible au labour mécanique et aux sols pauvres en matière organique fraîche.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- 4 paires de pattes (8 pattes) -->
+                    <g stroke="#78350f" stroke-width="2.2" stroke-linecap="round" fill="none">
+                        <path d="M38,40 L24,28 L18,22"/><path d="M62,40 L76,28 L82,22"/>
+                        <path d="M34,48 L18,44 L12,42"/><path d="M66,48 L82,44 L88,42"/>
+                        <path d="M34,58 L18,62 L12,66"/><path d="M66,58 L82,62 L88,66"/>
+                        <path d="M38,68 L24,80 L18,86"/><path d="M62,68 L76,80 L82,86"/>
+                    </g>
+                    <!-- Gnathosoma (pièces buccales antérieures, sans antennes) -->
+                    <polygon points="45,32 55,32 50,22" fill="#92400e"/>
+                    <!-- Idiosoma globuleux non segmenté -->
+                    <ellipse cx="50" cy="54" rx="18" ry="22" fill="#b45309" stroke="#451a03" stroke-width="2"/>
+                    <ellipse cx="45" cy="48" rx="5" ry="9" fill="#f59e0b" opacity="0.35"/>
+                </svg>`
+            },
+            {
+                id: 'enchytreide',
+                name: 'Enchytréide',
+                taxon: 'Annelida • Oligochaeta • Enchytraeidae',
+                group: 'meso',
+                groupLabel: 'Mésofaune',
+                size: '1 à 4 mm (diamètre < 0,5 mm)',
+                trophic: 'Détritivore / Bactérivore',
+                x: 50, y: 34,
+                color: '#d97706',
+                morphology: 'Petit ver annelé translucide à blanchâtre, cylindrique et fin (sans pattes ni yeux), apparenté aux lombrics mais de taille réduite (classé dans la mésofaune).',
+                role: 'Assure la micro-aération de l’horizon organo-minéral, ingère matière organique et minéraux et accélère la minéralisation.',
+                threat: 'Sensible au dessèchement brutal des sols nus et au tassement.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M18,74 C16,46 42,56 46,36 C50,18 76,22 82,44" fill="none" stroke="#cbd5e1" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M18,74 C16,46 42,56 46,36 C50,18 76,22 82,44" fill="none" stroke="#f8fafc" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M16,64 H22 M21,54 H27 M32,50 L35,55 M43,43 H49 M47,31 L52,34 M58,23 L59,29 M70,25 L68,31 M78,34 L73,37" stroke="#94a3b8" stroke-width="1.2"/>
+                </svg>`
+            },
+            {
+                id: 'diploure',
+                name: 'Diploure (Campodé)',
+                taxon: 'Arthropoda • Hexapoda • Diplura',
+                group: 'meso',
+                groupLabel: 'Mésofaune',
+                size: '2 à 4 mm',
+                trophic: 'Détritivore / Micro-prédateur',
+                x: 68, y: 36,
+                color: '#d97706',
+                morphology: 'Hexapode aveugle et dépigmenté (blanchâtre), corps allongé à 3 paires de pattes, longues antennes moniliformes (« en collier de perles ») et abdomen terminé par 2 cerques bien visibles (filiformes ou en pince).',
+                role: 'Vit dans les pores naturels du sol ; participe au recyclage des débris organiques et régule la microfaune.',
+                threat: 'Disparaît dès que la porosité naturelle du sol est détruite par le tassement ou le travail mécanique intensif.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Antennes moniliformes -->
+                    <path d="M46,22 Q36,12 28,6 M54,22 Q64,12 72,6" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="2,2"/>
+                    <!-- 3 paires de pattes -->
+                    <path d="M45,34 L32,30 M55,34 L68,30 M45,42 L31,44 M55,42 L69,44 M45,50 L32,56 M55,50 L68,56" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Corps allongé dépigmenté -->
+                    <ellipse cx="50" cy="24" rx="5" ry="5" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+                    <rect x="45" y="29" width="10" height="44" rx="5" fill="#fef3c7" stroke="#b45309" stroke-width="1.5"/>
+                    <path d="M45,37 H55 M45,45 H55 M45,53 H55 M45,61 H55 M45,68 H55" stroke="#d97706" stroke-width="1.1"/>
+                    <!-- 2 cerques terminaux caractéristiques -->
+                    <path d="M47,73 L38,93 M53,73 L62,93" stroke="#b45309" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'protoure',
+                name: 'Protoure',
+                taxon: 'Arthropoda • Hexapoda • Protura',
+                group: 'meso',
+                groupLabel: 'Mésofaune',
+                size: '0,6 à 2 mm',
+                trophic: 'Mycorhizophage (suceur d’hyphes)',
+                x: 85, y: 34,
+                color: '#d97706',
+                morphology: 'Minuscule hexapode allongé dépigmenté, dépourvu d’yeux et d’antennes : sa première paire de pattes est dirigée vers l’avant et joue un rôle d’organe sensoriel.',
+                role: 'Se nourrit du contenu des hyphes de champignons mycorhiziens et participe aux échanges dans la rhizosphère.',
+                threat: 'Très sensible aux perturbations physiques et chimiques du sol (labour, fongicides).',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- 1ère paire de pattes dirigée vers l'avant (rôle sensoriel, pas d'antennes) -->
+                    <path d="M46,32 L36,20 L34,10 M54,32 L64,20 L66,10" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round"/>
+                    <!-- 2e et 3e paires de pattes -->
+                    <path d="M45,42 L32,44 M55,42 L68,44 M45,51 L32,57 M55,51 L68,57" stroke="#92400e" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Tête conique sans antennes + corps segmenté -->
+                    <polygon points="45,28 55,28 50,18" fill="#fde68a" stroke="#92400e" stroke-width="1.5"/>
+                    <rect x="45" y="28" width="10" height="54" rx="5" fill="#fde68a" stroke="#92400e" stroke-width="1.5"/>
+                    <path d="M45,38 H55 M45,47 H55 M45,56 H55 M45,65 H55 M45,74 H55" stroke="#b45309" stroke-width="1.2"/>
+                </svg>`
+            },
+
+            // ================= MICROFAUNE (< 0,2 mm) =================
+            {
+                id: 'nematode',
+                name: 'Nématode libre',
+                taxon: 'Nematoda',
+                group: 'microfaune',
+                groupLabel: 'Microfaune',
+                size: '< 0,2 mm (50 à 150 µm)',
+                trophic: 'Bactérivore / Fongivore / Prédateur',
+                x: 15, y: 63,
+                color: '#0284c7',
+                morphology: 'Ver rond microscopique non segmenté, fusiforme (effilé aux deux extrémités), recouvert d’une cuticule lisse translucide, sans pattes ni cils.',
+                role: 'Maillon central de la boucle microbienne : broute bactéries et champignons et libère de l’azote minéral (NH₄⁺) directement assimilable par les racines.',
+                threat: 'La diversité des nématodes est un bio-indicateur reconnu de la perturbation mécanique et des excès d’engrais minéraux.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M14,76 C28,74 26,44 48,48 C70,52 66,22 86,20" fill="none" stroke="#0369a1" stroke-width="7" stroke-linecap="round"/>
+                    <path d="M14,76 C28,74 26,44 48,48 C70,52 66,22 86,20" fill="none" stroke="#bae6fd" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- Tube digestif interne visible par transparence -->
+                    <path d="M22,70 C32,66 32,46 48,48 C64,50 64,28 78,24" fill="none" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="3,2"/>
+                </svg>`
+            },
+            {
+                id: 'tardigrade',
+                name: 'Tardigrade (« Ourson d’eau »)',
+                taxon: 'Tardigrada',
+                group: 'microfaune',
+                groupLabel: 'Microfaune',
+                size: '< 0,2 mm (0,1 à 0,2 mm)',
+                trophic: 'Phytophage / Bactérivore',
+                x: 47, y: 61,
+                color: '#0284c7',
+                morphology: 'Animal microscopique au corps trapu divisé en 4 segments portant 4 paires de pattes courtes lobées terminées par de fines griffes, avec un stylet buccal.',
+                role: 'Consomme des micro-algues, des bactéries et le contenu cellulaire des mousses/débris ; entre en vie ralentie (cryptobiose) lors des sécheresses.',
+                threat: 'Nécessite un sol bien structuré capable de retenir un film d’eau grâce à la matière organique.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- 4 paires de pattes lobées à griffes -->
+                    <g fill="#7dd3fc" stroke="#0369a1" stroke-width="1.6">
+                        <path d="M32,56 L28,68 L34,68 L37,57"/>
+                        <path d="M45,58 L43,71 L49,71 L51,58"/>
+                        <path d="M58,58 L57,71 L63,71 L64,58"/>
+                        <path d="M72,55 L74,67 L80,66 L77,53"/>
+                    </g>
+                    <!-- Corps trapu à 4 segments -->
+                    <path d="M20,46 C20,32 78,32 80,48 C80,58 20,58 20,46 Z" fill="#bae6fd" stroke="#0369a1" stroke-width="2"/>
+                    <path d="M36,34 V56 M50,33 V57 M64,34 V56" stroke="#0284c7" stroke-width="1.4"/>
+                    <!-- Bouche tubulaire -->
+                    <rect x="15" y="44" width="6" height="5" rx="2" fill="#0369a1"/>
+                </svg>`
+            },
+            {
+                id: 'rotifere',
+                name: 'Rotifère',
+                taxon: 'Rotifera',
+                group: 'microfaune',
+                groupLabel: 'Microfaune',
+                size: '< 0,2 mm (0,05 à 0,2 mm)',
+                trophic: 'Filtreur bactérivore',
+                x: 78, y: 63,
+                color: '#0284c7',
+                morphology: 'Organisme microscopique aquatique du film d’eau du sol, caractérisé par une double couronne ciliée antérieure (appareil rotateur / trochal) et un pied postérieur bifurqué.',
+                role: 'Filtre les bactéries et particules organiques fines en suspension dans l’eau capillaire, contribuant au recyclage des nutriments.',
+                threat: 'Vulnérable à l’assèchement rapide des sols appauvris en humus.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Couronne ciliée antérieure -->
+                    <ellipse cx="42" cy="24" rx="11" ry="5" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.6"/>
+                    <ellipse cx="58" cy="24" rx="11" ry="5" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.6"/>
+                    <path d="M32,20 L30,15 M38,18 L37,13 M45,18 L45,13 M55,18 L55,13 M62,18 L63,13 M68,20 L70,15" stroke="#0284c7" stroke-width="1.5"/>
+                    <!-- Tronc -->
+                    <path d="M38,27 C34,46 38,62 46,68 H54 C62,62 66,46 62,27 Z" fill="#bae6fd" stroke="#0369a1" stroke-width="2"/>
+                    <!-- Pied postérieur bifurqué -->
+                    <path d="M47,68 L45,84 L41,92 M53,68 L55,84 L59,92" fill="none" stroke="#0369a1" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>`
+            },
+
+            // ================= MICRO-ORGANISMES (< 0,05 mm) =================
+            {
+                id: 'bacteries',
+                name: 'Bactéries du sol',
+                taxon: 'Prokaryota • Bacteria',
+                group: 'microorg',
+                groupLabel: 'Micro-organismes',
+                size: '0,001 à 0,005 mm (10⁸–10⁹ / g)',
+                trophic: 'Minéralisateurs / Symbiotiques',
+                x: 13, y: 83,
+                color: '#059669',
+                morphology: 'Cellules procaryotes unicellulaires sans noyau, de formes variées à l’échelle micrométrique : bâtonnets (bacilles), sphères (coques) ou spirales (spirilles), parfois munies de flagelles.',
+                role: 'Assurent la minéralisation rapide de la matière organique, la nitrification et la fixation symbiotique de l’azote de l’air (ex : Rhizobium des légumineuses).',
+                threat: 'En grandes cultures intensives, elles dominent (65–80 % de l’ADN) mais leur abondance totale chute sous 1 à 2 Md/g faute de matière organique.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Bacilles (bâtonnets) -->
+                    <rect x="18" y="26" width="32" height="12" rx="6" transform="rotate(-18 34 32)" fill="#10b981" stroke="#064e3b" stroke-width="2"/>
+                    <path d="M16,37 Q8,42 12,48" fill="none" stroke="#065f46" stroke-width="1.5"/>
+                    <rect x="48" y="54" width="34" height="12" rx="6" transform="rotate(22 65 60)" fill="#34d399" stroke="#064e3b" stroke-width="2"/>
+                    <!-- Coques (sphères) -->
+                    <circle cx="68" cy="28" r="8" fill="#059669" stroke="#064e3b" stroke-width="2"/>
+                    <circle cx="80" cy="34" r="7" fill="#10b981" stroke="#064e3b" stroke-width="2"/>
+                    <!-- Spirille -->
+                    <path d="M20,72 Q28,64 34,72 T48,72" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round"/>
+                </svg>`
+            },
+            {
+                id: 'champignons',
+                name: 'Champignons (Mycélium)',
+                taxon: 'Eukaryota • Fungi',
+                group: 'microorg',
+                groupLabel: 'Micro-organismes',
+                size: 'Hyphes de 5 à 10 µm (0,005–0,01 mm)',
+                trophic: 'Saprophytes / Mycorhiziens',
+                x: 34, y: 81,
+                color: '#059669',
+                morphology: 'Organismes eucaryotes formés d’un réseau filamenteux ramifié d’hyphes microscopiques cloisonnés ou non (mycélium) portant des conidies / spores reproductrices.',
+                role: 'Dégradent les composés ligneux complexes, stabilisent durablement les agrégats du sol et forment des mycorhizes multipliant l’absorption d’eau et de phosphore.',
+                threat: 'Très sensibles au labour qui sectionne les hyphes : tombent à 10–20 % de l’ADN en grandes cultures contre 35–50 % en prairies.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Réseau ramifié d'hyphes -->
+                    <g stroke="#d1fae5" stroke-width="3.5" stroke-linecap="round" fill="none">
+                        <path d="M16,84 L46,56 L82,76"/>
+                        <path d="M46,56 L48,26"/>
+                        <path d="M32,70 L20,46"/>
+                        <path d="M62,66 L76,42"/>
+                    </g>
+                    <g stroke="#047857" stroke-width="1.5" stroke-linecap="round" fill="none">
+                        <path d="M16,84 L46,56 L82,76 M46,56 L48,26 M32,70 L20,46 M62,66 L76,42"/>
+                    </g>
+                    <!-- Conidies / Spores -->
+                    <circle cx="48" cy="22" r="5" fill="#10b981" stroke="#064e3b" stroke-width="1.5"/>
+                    <circle cx="20" cy="43" r="4" fill="#34d399" stroke="#064e3b" stroke-width="1.5"/>
+                    <circle cx="76" cy="39" r="4" fill="#34d399" stroke="#064e3b" stroke-width="1.5"/>
+                </svg>`
+            },
+            {
+                id: 'archees',
+                name: 'Archées du sol',
+                taxon: 'Prokaryota • Archaea',
+                group: 'microorg',
+                groupLabel: 'Micro-organismes',
+                size: '0,001 à 0,003 mm (1–3 µm)',
+                trophic: 'Chimiolithotrophes (cycle N et C)',
+                x: 54, y: 84,
+                color: '#059669',
+                morphology: 'Micro-organismes unicellulaires procaryotes (sans noyau) distincts des bactéries par la structure chimique de leur membrane et de leur paroi, souvent en amas coccoïdes ou lobés.',
+                role: 'Acteurs clés de l’oxydation de l’ammoniac (nitrification) et des cycles biogéochimiques de l’azote et du carbone dans les sols.',
+                threat: 'Représentent 3 à 7 % de l’ADN microbien total mesuré dans les sols français (réseau Gis Sol / RMQS).',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <g fill="#f43f5e" stroke="#881337" stroke-width="1.8">
+                        <circle cx="38" cy="42" r="11"/>
+                        <circle cx="58" cy="38" r="10"/>
+                        <circle cx="48" cy="58" r="12"/>
+                        <circle cx="66" cy="56" r="9"/>
+                        <circle cx="32" cy="60" r="8"/>
+                    </g>
+                    <circle cx="35" cy="39" r="2.5" fill="#fecdd3"/>
+                    <circle cx="55" cy="35" r="2.5" fill="#fecdd3"/>
+                    <circle cx="45" cy="55" r="3" fill="#fecdd3"/>
+                </svg>`
+            },
+            {
+                id: 'protozoaires',
+                name: 'Protozoaires (Amibe / Cilié)',
+                taxon: 'Eukaryota • Protozoa',
+                group: 'microorg',
+                groupLabel: 'Micro-organismes',
+                size: '0,01 à 0,1 mm (10–100 µm)',
+                trophic: 'Prédateurs bactérivores',
+                x: 72, y: 82,
+                color: '#059669',
+                morphology: 'Cellule eucaryote unicellulaire (avec noyau et vacuoles visibles) mobile grâce à des déformations cytoplasmiques (pseudopodes chez les amibes) ou des cils vibratiles.',
+                role: 'Régulent les populations bactériennes dans la rhizosphère et relarguent de l’azote minéral directement assimilable par les plantes.',
+                threat: 'Représentent avec les micro-algues environ 2 à 6 % de l’ADN du sol ; sensibles à l’assèchement et aux pollutions.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <!-- Pseudopodes d'amibe -->
+                    <path d="M34,32 C22,22 16,36 28,46 C18,58 26,76 42,68 C54,82 76,78 72,60 C86,52 82,34 66,38 C62,20 42,20 34,32 Z"
+                          fill="#a7f3d0" stroke="#047857" stroke-width="2"/>
+                    <!-- Noyau et vacuoles -->
+                    <circle cx="50" cy="48" r="8" fill="#059669" stroke="#064e3b" stroke-width="1.5"/>
+                    <circle cx="36" cy="54" r="3.5" fill="#ecfdf5" stroke="#047857" stroke-width="1.2"/>
+                    <circle cx="62" cy="56" r="4" fill="#ecfdf5" stroke="#047857" stroke-width="1.2"/>
+                </svg>`
+            },
+            {
+                id: 'microalgues',
+                name: 'Micro-algues du sol',
+                taxon: 'Eukaryota • Chlorophyta / Diatomées',
+                group: 'microorg',
+                groupLabel: 'Micro-organismes',
+                size: '0,005 à 0,05 mm (5–50 µm)',
+                trophic: 'Autotrophes photosynthétiques',
+                x: 89, y: 82,
+                color: '#059669',
+                morphology: 'Cellules eucaryotes unicellulaires ou coloniales contenant des chloroplastes verts riches en chlorophylle, vivant dans les premiers millimètres éclairés et humides du sol.',
+                role: 'Produisent de la matière organique par photosynthèse en surface et sécrètent des mucilages stabilisant la croûte superficielle contre l’érosion.',
+                threat: 'Sensibles aux herbicides et au travail mécanique fréquent de la couche superficielle.',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="50" r="28" fill="#dcfce7" stroke="#15803d" stroke-width="2" stroke-dasharray="4,2"/>
+                    <circle cx="40" cy="42" r="10" fill="#22c55e" stroke="#14532d" stroke-width="1.8"/>
+                    <circle cx="60" cy="42" r="10" fill="#16a34a" stroke="#14532d" stroke-width="1.8"/>
+                    <circle cx="40" cy="60" r="10" fill="#16a34a" stroke="#14532d" stroke-width="1.8"/>
+                    <circle cx="60" cy="60" r="10" fill="#22c55e" stroke="#14532d" stroke-width="1.8"/>
+                </svg>`
+            }
+        ];
+
+        /* Compléments pédagogiques (habitat, abondance, échelle, confusions, leviers, anecdote) */
+        const ORGANISM_DETAILS = {
+    "lombric": {
+        "fonction": "Ingénieur du sol",
+        "sizeMm": [
+            40,
+            80
+        ],
+        "habitat": "Galeries verticales (anéciques) ou horizontales (endogés) ; litière pour les épigés",
+        "abondance": "Jusqu’à plusieurs centaines d’individus/m² en prairie, nettement moins en sol labouré",
+        "confusion": "Enchytréide : même organisation en anneaux, mais bien plus petit, fin et translucide (mésofaune).",
+        "leviers": "Couverts végétaux et résidus laissés en surface, limitation du labour profond, apports réguliers de matière organique (fumier, compost).",
+        "anecdote": "On distingue 3 catégories écologiques : les épigés (litière), les endogés (dans le sol) et les anéciques (galeries verticales, remontent la litière en profondeur)."
+    },
+    "coleoptere": {
+        "fonction": "Prédateur auxiliaire des cultures",
+        "sizeMm": [
+            10,
+            25
+        ],
+        "habitat": "Surface du sol et litière ; abris sous pierres, haies et bandes enherbées ; surtout actif la nuit",
+        "abondance": "Plusieurs dizaines d’espèces possibles dans un paysage agricole diversifié",
+        "confusion": "Staphylin : élytres courts laissant l’abdomen visible, alors que ceux du carabe recouvrent tout l’abdomen.",
+        "leviers": "Haies et bandes enherbées (zones refuges), couverts permanents, réduction des insecticides.",
+        "anecdote": "Certains carabes consomment aussi des graines d’adventices : ils contribuent à réguler les mauvaises herbes."
+    },
+    "diplopode": {
+        "fonction": "Fragmenteur de la litière",
+        "sizeMm": [
+            15,
+            45
+        ],
+        "habitat": "Litière et horizon organique humide, sous pierres et bois mort",
+        "abondance": "Souvent plusieurs dizaines d’individus/m² dans les litières humides",
+        "confusion": "Chilopode : 1 seule paire de pattes par segment, corps aplati, mobile et prédateur. L’iule a 2 paires, un corps cylindrique et s’enroule en spirale.",
+        "leviers": "Maintenir un humus et des résidus organiques en surface ; éviter le dessèchement du sol (couvert végétal).",
+        "anecdote": "Il ne mord pas : pour se défendre il s’enroule et peut sécréter des substances irritantes. Malgré son nom, il n’a jamais 1 000 pattes."
+    },
+    "chilopode": {
+        "fonction": "Prédateur de la macrofaune",
+        "sizeMm": [
+            15,
+            35
+        ],
+        "habitat": "Litière, sous pierres et écorces, fissures du sol",
+        "abondance": "Moins abondant que les diplopodes (prédateur, en haut de la chaîne)",
+        "confusion": "Diplopode (iule) : 2 paires de pattes par segment, corps cylindrique, antennes courtes.",
+        "leviers": "Préserver les abris et la litière ; limiter les insecticides à large spectre.",
+        "anecdote": "Sa première paire de pattes est transformée en forcipules venimeuses qui paralysent ses proies (collemboles, petits vers, insectes)."
+    },
+    "isopode": {
+        "fonction": "Décomposeur de litière",
+        "sizeMm": [
+            8,
+            18
+        ],
+        "habitat": "Milieux humides et sombres : litière, sous pierres et bois mort",
+        "abondance": "Plusieurs dizaines à plusieurs centaines d’individus/m² dans les litières humides",
+        "confusion": "Diplopode : corps cylindrique à très nombreuses pattes ; le cloporte n’a que 7 paires de pattes et un corps ovale aplati.",
+        "leviers": "Maintenir litière et sol humide (paillage, couverts) : il craint le dessèchement.",
+        "anecdote": "C’est un crustacé comme la crevette : ses organes respiratoires dérivent de branchies, d’où son besoin d’humidité. Il peut aussi accumuler certains métaux lourds."
+    },
+    "gasteropode": {
+        "fonction": "Brouteur (ravageur ou décomposeur selon l’espèce)",
+        "sizeMm": [
+            12,
+            50
+        ],
+        "habitat": "Surface du sol et litière humide ; actif la nuit et par temps pluvieux",
+        "abondance": "Très variable : peut pulluler au printemps humide sur sols nus ou motteux",
+        "confusion": "Larve d’insecte : corps mou aussi, mais le gastéropode a un pied musculeux, des tentacules et laisse une trace de mucus.",
+        "leviers": "Favoriser les prédateurs (carabes) et limiter les refuges (sol très motteux, résidus en tas) ; surveiller les semis sensibles.",
+        "anecdote": "Sa langue râpeuse (radula) porte des milliers de petites dents chitineuses avec lesquelles il racle les tissus végétaux."
+    },
+    "larve_insecte": {
+        "fonction": "Rhizophage / ravageur potentiel",
+        "sizeMm": [
+            15,
+            40
+        ],
+        "habitat": "Horizon A, au contact des racines (prairies, cultures)",
+        "abondance": "Dépend des pics de population (par exemple les années à hannetons)",
+        "confusion": "Lombric : ni pattes ni capsule céphalique. La larve a 3 paires de pattes thoraciques et une tête brun-orangé dure.",
+        "leviers": "Rotation des cultures, travail du sol ciblé à la bonne période, auxiliaires (oiseaux, carabes), biodiversité préservée.",
+        "anecdote": "Le « ver blanc » du hanneton commun vit environ 3 ans dans le sol avant de devenir adulte. Chez les cétoines, en revanche, la larve décompose le bois mort et l’humus."
+    },
+    "arachnide": {
+        "fonction": "Prédateur de surface",
+        "sizeMm": [
+            6,
+            20
+        ],
+        "habitat": "Surface du sol et litière ; chasse à l’affût ou à la course, sans toile",
+        "abondance": "Jusqu’à quelques dizaines d’individus/m² en prairie et en cultures peu perturbées",
+        "confusion": "Acarien : 8 pattes aussi, mais corps globuleux non segmenté et bien plus petit. L’araignée a un pédicelle entre ses 2 tagmes.",
+        "leviers": "Bandes enherbées, couverts, paillage, réduction des insecticides.",
+        "anecdote": "La femelle porte son cocon d’œufs accroché à ses filières, puis ses jeunes sur son abdomen."
+    },
+    "collembole": {
+        "fonction": "Fragmenteur et régulateur de la microflore",
+        "sizeMm": [
+            0.5,
+            3
+        ],
+        "habitat": "Litière et horizon A, films d’eau ; certaines espèces vivent à la surface",
+        "abondance": "De 10 000 à 100 000 individus/m² selon le sol",
+        "confusion": "Acarien : 8 pattes, sans antennes ni furca. Le collembole a 6 pattes, des antennes et saute.",
+        "leviers": "Matière organique fraîche et résidus en surface, humidité du sol, limitation des pesticides.",
+        "anecdote": "Sa furca, repliée sous l’abdomen comme un ressort, le propulse en cas de danger. Un collembole (Folsomia candida) sert d’organisme test en écotoxicologie des sols."
+    },
+    "acarien": {
+        "fonction": "Décomposeur et régulateur",
+        "sizeMm": [
+            0.3,
+            1.5
+        ],
+        "habitat": "Litière, horizon organo-minéral, pores du sol",
+        "abondance": "Jusqu’à 100 000 individus/m² en prairie",
+        "confusion": "Collembole : 6 pattes, antennes et furca. L’acarien a 8 pattes et pas d’antennes.",
+        "leviers": "Maintenir de la matière organique fraîche, limiter le travail du sol et les pesticides.",
+        "anecdote": "Les oribates ont un développement lent et vivent assez longtemps : leurs populations se reconstituent lentement après une perturbation (labour, pesticide)."
+    },
+    "enchytreide": {
+        "fonction": "Micro-ingénieur et décomposeur",
+        "sizeMm": [
+            1,
+            4
+        ],
+        "habitat": "Horizon organo-minéral et litière humide ; fréquent dans les sols riches en matière organique ou acides",
+        "abondance": "Jusqu’à plusieurs dizaines de milliers d’individus/m² dans certaines prairies",
+        "confusion": "Lombric : même organisation annelée mais beaucoup plus grand. Nématode : non segmenté et plus petit.",
+        "leviers": "Apports de matière organique, couverture du sol (humidité), éviter le tassement.",
+        "anecdote": "Ses micro-galeries et ses pelotes fécales participent à la formation de la microstructure du sol."
+    },
+    "diploure": {
+        "fonction": "Micro-prédateur",
+        "sizeMm": [
+            2,
+            4
+        ],
+        "habitat": "Pores et fissures de l’horizon A, humides et sombres",
+        "abondance": "Rarement abondant, discret",
+        "confusion": "Collembole : possède une furca sauteuse et pas de cerques. Le diploure porte 2 cerques à l’arrière.",
+        "leviers": "Sols peu perturbés dont le réseau de pores est préservé (limiter tassement et labour).",
+        "anecdote": "Comme les collemboles et les protoures, c’est un hexapode « entognathe » : ses pièces buccales sont rétractées dans la tête."
+    },
+    "protoure": {
+        "fonction": "Consommateur d’hyphes mycorhiziens",
+        "sizeMm": [
+            0.6,
+            2
+        ],
+        "habitat": "Horizon A et rhizosphère, sols riches en matière organique et en champignons",
+        "abondance": "Faible à modérée ; discret et rarement observé",
+        "confusion": "Collembole ou diploure : le protoure est le seul sans yeux ni antennes ; ses pattes antérieures sont levées en avant.",
+        "leviers": "Préserver le réseau fongique : réduire le travail du sol, maintenir des plantes hôtes (couverts).",
+        "anecdote": "Sans antennes, il « tâte » avec sa première paire de pattes. Son abdomen gagne des segments au fil des mues (anamorphose)."
+    },
+    "nematode": {
+        "fonction": "Régulateur de la chaîne trophique",
+        "sizeMm": [
+            0.05,
+            0.15
+        ],
+        "habitat": "Film d’eau autour des particules, pores du sol, rhizosphère",
+        "abondance": "Plusieurs millions d’individus/m²",
+        "confusion": "Enchytréide : ver segmenté et plus grand. Le nématode est fusiforme, non segmenté et se déplace par ondulations.",
+        "leviers": "Rotations et diversité des cultures, matière organique, couverts adaptés (certains limitent les nématodes phytoparasites).",
+        "anecdote": "Selon l’espèce, il est bactérivore, fongivore, prédateur ou phytoparasite : la composition de la communauté (indice de maturité) renseigne sur l’état du sol."
+    },
+    "tardigrade": {
+        "fonction": "Micro-brouteur (bio-indicateur d’humidité)",
+        "sizeMm": [
+            0.1,
+            0.2
+        ],
+        "habitat": "Films d’eau des mousses, lichens, litières et sols humides",
+        "abondance": "Variable : bien plus présent dans les sols à mousses et litières humides",
+        "confusion": "Acarien : 8 pattes aussi, mais articulées. Le tardigrade a des pattes lobées, non articulées, terminées par des griffes.",
+        "leviers": "Maintenir humidité et couvert (mousses, litière) ; peu de leviers directs.",
+        "anecdote": "Quand le milieu se dessèche, il entre en cryptobiose (forme « tonneau ») et peut survivre des années avant de se réveiller à la réhydratation."
+    },
+    "rotifere": {
+        "fonction": "Filtreur de bactéries",
+        "sizeMm": [
+            0.05,
+            0.2
+        ],
+        "habitat": "Film d’eau du sol et pores saturés en eau",
+        "abondance": "Variable, très dépendante de l’humidité du sol",
+        "confusion": "Protozoaire cilié : une seule cellule. Le rotifère est pluricellulaire, avec une couronne ciliée et un pied.",
+        "leviers": "Maintenir humidité et matière organique ; un sol nu et desséché lui est défavorable.",
+        "anecdote": "Les rotifères bdelloïdes survivent à la dessiccation (anhydrobiose) et se reproduisent sans mâles."
+    },
+    "bacteries": {
+        "fonction": "Minéralisateur et symbiotique",
+        "sizeMm": [
+            0.001,
+            0.005
+        ],
+        "habitat": "Surface des agrégats, rhizosphère, microsites riches en eau et en matière organique",
+        "abondance": "10⁸ à 10⁹ cellules par gramme de sol, pour des milliers d’espèces",
+        "confusion": "Archée : presque identique au microscope, seules la membrane et la génétique les distinguent. Champignon : eucaryote filamenteux.",
+        "leviers": "Apports réguliers de matière organique, couverts, rotations ; limiter l’excès d’engrais azotés minéraux et le travail intensif.",
+        "anecdote": "Les rhizobiums fixent l’azote de l’air en symbiose avec les légumineuses (nodosités) : un levier pour réduire les engrais azotés."
+    },
+    "champignons": {
+        "fonction": "Décomposeur et symbiotique (mycorhizes)",
+        "sizeMm": [
+            0.005,
+            0.01
+        ],
+        "habitat": "Litière, horizon A, rhizosphère ; réseaux d’hyphes entre les agrégats",
+        "abondance": "Des dizaines de mètres d’hyphes par gramme de sol",
+        "confusion": "Actinomycète : filamenteux aussi mais procaryote, aux filaments bien plus fins (environ 1 µm).",
+        "leviers": "Réduire le travail du sol (préserve les hyphes), maintenir couverts et résidus, limiter les fongicides.",
+        "anecdote": "Les mycorhizes à arbuscules s’associent à la plupart des plantes cultivées (sauf crucifères et chénopodiacées) et améliorent l’absorption du phosphore et de l’eau."
+    },
+    "archees": {
+        "fonction": "Nitrificateur (oxydation de l’ammoniac)",
+        "sizeMm": [
+            0.001,
+            0.003
+        ],
+        "habitat": "Microsites variés, souvent sols acides ou pauvres ; aussi milieux extrêmes",
+        "abondance": "Quelques pourcents des procaryotes du sol, davantage dans certains sols acides",
+        "confusion": "Bactérie : indiscernable au microscope optique ; les différences sont chimiques (membrane) et génétiques (ARNr 16S).",
+        "leviers": "Modérer les apports d’azote minéral : une nitrification excessive augmente les pertes de nitrates et de N₂O.",
+        "anecdote": "Découvertes d’abord dans des sources chaudes, les archées sont présentes dans presque tous les sols ; certaines oxydent l’ammoniac (nitrification)."
+    },
+    "protozoaires": {
+        "fonction": "Prédateur de bactéries (boucle microbienne)",
+        "sizeMm": [
+            0.01,
+            0.1
+        ],
+        "habitat": "Film d’eau, pores du sol, rhizosphère",
+        "abondance": "Des dizaines de milliers de cellules par gramme de sol",
+        "confusion": "Rotifère ou nématode : pluricellulaires. Le protozoaire n’est qu’une seule cellule.",
+        "leviers": "Matière organique et humidité ; éviter le tassement qui détruit les pores.",
+        "anecdote": "En broutant les bactéries, il libère l’azote qu’elles avaient immobilisé, rendu disponible aux racines : c’est la « boucle microbienne »."
+    },
+    "microalgues": {
+        "fonction": "Producteur primaire de surface",
+        "sizeMm": [
+            0.005,
+            0.05
+        ],
+        "habitat": "Premiers millimètres éclairés et humides du sol, croûtes de surface",
+        "abondance": "Jusqu’à plusieurs dizaines de milliers de cellules par gramme en surface",
+        "confusion": "Cyanobactérie : procaryote également photosynthétique. La micro-algue est eucaryote, avec chloroplastes.",
+        "leviers": "Limiter le travail superficiel fréquent et les herbicides ; garder une surface structurée.",
+        "anecdote": "Elles colonisent les sols nus et participent à la formation de croûtes biologiques qui réduisent l’érosion."
+    }
+};
+        ORGANISMS_DATA.forEach(o => Object.assign(o, ORGANISM_DETAILS[o.id] || {}));
+
+        /* Mini-quiz d'identification morphologique (4 questions) */
+        const MORPHO_QUIZ = [
+            {
+                id: 'mq1',
+                clue: '« J’appartiens à la mésofaune (0,2–4 mm), je possède 6 pattes, des antennes à 4 articles et une furca repliée sous l’abdomen pour sauter. »',
+                options: ['Acarien oribate', 'Collembole', 'Nématode'],
+                correct: 1
+            },
+            {
+                id: 'mq2',
+                clue: '« J’ai 4 paires de pattes (8 pattes), un corps globuleux non segmenté et AUCUNE antenne. Je mesure entre 0,3 et 1,5 mm. »',
+                options: ['Acarien du sol (Oribate)', 'Diploure', 'Coléoptère'],
+                correct: 0
+            },
+            {
+                id: 'mq3',
+                clue: '« Myriapode prédateur de la macrofaune au corps aplati, je porte 1 seule paire de pattes par segment et des forcipules venimeuses. »',
+                options: ['Diplopode (Iule)', 'Chilopode (Lithobie)', 'Isopode (Cloporte)'],
+                correct: 1
+            },
+            {
+                id: 'mq4',
+                clue: '« Mes réseaux filamenteux d’hyphes dégradent la lignine et forment des mycorhizes, mais le labour les sectionne fortement. »',
+                options: ['Champignons (Mycélium)', 'Bactéries bacilles', 'Tardigrade'],
+                correct: 0
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 3. QUESTIONS DU QCM « BILAN FLASH » (6 QUESTIONS)
+         * ------------------------------------------------------------------- */
+        const QUIZ_QUESTIONS = [
+            {
+                id: 'qz1',
+                question: '1. Quelle proportion de la biodiversité totale de la planète est hébergée dans les sols ?',
+                options: [
+                    'Environ 5 % (un vingtième)',
+                    'Environ 25 % (un quart)',
+                    'Environ 75 % (trois quarts)'
+                ],
+                correct: 1,
+                explanation: 'Un quart (25 %) de la biodiversité mondiale vit dans les sols (Cours Pro1B 2025 ; FAO et al., 2020).'
+            },
+            {
+                id: 'qz2',
+                question: '2. À quelle classe de taille appartiennent les collemboles et les acariens du sol ?',
+                options: [
+                    'Microfaune (< 0,2 mm)',
+                    'Mésofaune (0,2 mm à 4 mm)',
+                    'Macrofaune (4 mm à 80 mm)'
+                ],
+                correct: 1,
+                explanation: 'Les collemboles, acariens, enchytréides et diploures appartiennent à la mésofaune (0,2 à 4 mm).'
+            },
+            {
+                id: 'qz3',
+                question: '3. Que désigne exactement le phénomène d’« homogénéisation biotique » ?',
+                options: [
+                    'L’augmentation du nombre d’espèces rares grâce aux engrais',
+                    'Le fait de retrouver les mêmes espèces banales partout tandis que les espèces endémiques déclinent',
+                    'Le mélange homogène de l’argile et de l’humus par les vers de terre'
+                ],
+                correct: 1,
+                explanation: 'Sous l’effet de l’intensification des usages, les espèces spécialisées disparaissent au profit des mêmes espèces généralistes partout.'
+            },
+            {
+                id: 'qz4',
+                question: '4. D’après le réseau Gis Sol / RMQS, quel système agricole présente une biomasse microbienne > 14 µg ADN/g (> 3 milliards de bactéries/g) et un équilibre Bactéries (40–55 %) / Champignons (35–50 %) ?',
+                options: [
+                    'Les grandes cultures intensives (Beauce, Champagne)',
+                    'Les prairies permanentes et zones d’élevage (Bretagne, Massif central)',
+                    'Les sols nus labourés en continu'
+                ],
+                correct: 1,
+                explanation: 'Les prairies permanentes entretiennent des sols riches en MO (> 3,4–4,3 %) avec une biomasse élevée et un bon équilibre bactéries/champignons.'
+            },
+            {
+                id: 'qz5',
+                question: '5. D’où provient la matière organique (MO) d’un sol ?',
+                options: [
+                    'De la dissolution des roches calcaires par l’eau de pluie',
+                    'De la transformation des débris végétaux par les organismes vivants du sol',
+                    'De l’épandage d’engrais azotés minéraux de synthèse'
+                ],
+                correct: 1,
+                explanation: 'La matière organique provient de la transformation des débris végétaux par les organismes vivants du sol.'
+            },
+            {
+                id: 'qz6',
+                question: '6. Quelles sont les deux limites majeures des engrais azotés minéraux utilisés en excès ?',
+                options: [
+                    'Fabrication chimique très consommatrice en énergie et risque de pollution des eaux souterraines et de surface',
+                    'Destruction directe des cailloux et baisse immédiate du rendement',
+                    'Blocage total de la photosynthèse et disparition des bactéries'
+                ],
+                correct: 0,
+                explanation: 'Les engrais azotés sont fabriqués par une réaction chimique très énergivore et, en excès, polluent les eaux souterraines et de surface.'
+            }
+        ];
+
+        /* -------------------------------------------------------------------
+         * 4. INITIALISATION & SAUVEGARDE AUTOMATIQUE (LOCALSTORAGE)
+         * ------------------------------------------------------------------- */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            // Édition professeur dédiée : accès direct à toutes les étapes.
+            appState.teacherMode = true;
+            appState.unlockedSteps = { 1: true, 2: true, 3: true, 4: true };
+            document.getElementById('teacher-banner').classList.remove('hidden');
+            setTeacherView(true);
+            initLoupeScene();
+            renderQuiz();
+            updateSimulator();
+            refreshNavigationUI();
+            initTimer();
+        });
+
+        function saveToStorage() {
+            try {
+                appState.studentName = document.getElementById('student-name').value;
+                Object.keys(appState.fields).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) appState.fields[id] = el.value;
+                });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {
+                console.warn('Sauvegarde locale indisponible :', e);
+            }
+        }
+
+        function loadFromStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (e) {
+                console.warn('Chargement local impossible :', e);
+            }
+
+            // Restauration des champs
+            document.getElementById('student-name').value = appState.studentName || '';
+            document.getElementById('student-name').addEventListener('input', saveToStorage);
+
+            Object.keys(appState.fields).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.value = appState.fields[id] || '';
+                    el.addEventListener('input', saveToStorage);
+                }
+            });
+
+            if (appState.teacherMode) {
+                document.getElementById('teacher-banner').classList.remove('hidden');
+            }
+            if (appState.synthesisLocked) {
+                applySynthesisLockUI();
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 5. CHRONOMÈTRE DE SÉANCE (50:00)
+         * ------------------------------------------------------------------- */
+        let totalSeconds = 50 * 60;
+        let timerInterval = null;
+        let timerRunning = false;
+
+        function initTimer() {
+            const toggleBtn = document.getElementById('timer-toggle');
+            const resetBtn = document.getElementById('timer-reset');
+
+            toggleBtn.addEventListener('click', () => {
+                if (timerRunning) {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    document.getElementById('timer-icon-play').classList.remove('hidden');
+                    document.getElementById('timer-icon-pause').classList.add('hidden');
+                } else {
+                    timerRunning = true;
+                    document.getElementById('timer-icon-play').classList.add('hidden');
+                    document.getElementById('timer-icon-pause').classList.remove('hidden');
+                    timerInterval = setInterval(() => {
+                        if (totalSeconds > 0) {
+                            totalSeconds--;
+                            updateTimerDisplay();
+                        } else {
+                            clearInterval(timerInterval);
+                            timerRunning = false;
+                        }
+                    }, 1000);
+                }
+            });
+
+            resetBtn.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                totalSeconds = 50 * 60;
+                updateTimerDisplay();
+                document.getElementById('timer-icon-play').classList.remove('hidden');
+                document.getElementById('timer-icon-pause').classList.add('hidden');
+            });
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            const display = document.getElementById('timer-display');
+            display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            if (totalSeconds <= 300) {
+                display.classList.remove('text-amber-300');
+                display.classList.add('text-red-400');
+            } else {
+                display.classList.add('text-amber-300');
+                display.classList.remove('text-red-400');
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 6. NAVIGATION PAR ÉTAPES & SYSTÈME DE MOTS DE PASSE
+         * ------------------------------------------------------------------- */
+        let currentStep = 1;
+
+        function selectStep(stepNum) {
+            if (appState.unlockedSteps[stepNum] || appState.teacherMode) {
+                showStepSection(stepNum);
+            } else {
+                pendingUnlockTarget = stepNum;
+                document.getElementById('modal-title').textContent = `Déverrouiller l'Étape ${stepNum}`;
+                document.getElementById('modal-subtitle').textContent = `Saisissez le mot de passe donné par l'enseignant pour accéder à l'étape ${stepNum}.`;
+                document.getElementById('modal-password-input').value = '';
+                document.getElementById('modal-error').classList.add('hidden');
+                document.getElementById('password-modal').classList.remove('hidden');
+                setTimeout(() => document.getElementById('modal-password-input').focus(), 50);
+            }
+        }
+
+        function openTeacherModal() {
+            pendingUnlockTarget = 'teacher';
+            document.getElementById('modal-title').textContent = 'Accès Mode Enseignant';
+            document.getElementById('modal-subtitle').textContent = 'Saisissez le code enseignant pour déverrouiller toutes les étapes et les corrigés.';
+            document.getElementById('modal-password-input').value = '';
+            document.getElementById('modal-error').classList.add('hidden');
+            document.getElementById('password-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('modal-password-input').focus(), 50);
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.add('hidden');
+            pendingUnlockTarget = null;
+        }
+
+        document.getElementById('modal-password-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') submitPassword();
+        });
+
+        function submitPassword() {
+            const entered = document.getElementById('modal-password-input').value.trim().toUpperCase();
+            const expected = PASSWORDS[pendingUnlockTarget];
+
+            if (entered === expected) {
+                if (pendingUnlockTarget === 'teacher') {
+                    appState.teacherMode = true;
+                    appState.unlockedSteps = { 1: true, 2: true, 3: true, 4: true };
+                    document.getElementById('teacher-banner').classList.remove('hidden');
+                    saveToStorage();
+                    refreshNavigationUI();
+                    closePasswordModal();
+                } else {
+                    const stepToOpen = pendingUnlockTarget;
+                    appState.unlockedSteps[stepToOpen] = true;
+                    saveToStorage();
+                    refreshNavigationUI();
+                    closePasswordModal();
+                    showStepSection(stepToOpen);
+                }
+            } else {
+                document.getElementById('modal-error').classList.remove('hidden');
+            }
+        }
+
+        function updateProgressivePasswordHint() {
+            const box = document.getElementById('progressive-password-hint');
+            const label = document.getElementById('progressive-password-label');
+            const value = document.getElementById('progressive-password-value');
+            if (!box || !label || !value) return;
+            const codes = {
+                1: { code: 'SOL2025', target: 'l’étape 2 – Dossiers & activités' },
+                2: { code: 'HUMUS', target: 'l’étape 3 – Synthèse & trace écrite' },
+                3: { code: 'CGEA1', target: 'l’étape 4 – Bilan & Quiz Flash' }
+            };
+            const item = codes[currentStep];
+            const teacherView = document.getElementById('btn-teacher-view')?.getAttribute('aria-pressed') === 'true';
+            if (!teacherView || !item) {
+                box.classList.add('hidden');
+                return;
+            }
+            label.textContent = `Code à communiquer pour débloquer ${item.target} :`;
+            value.textContent = item.code;
+            box.classList.remove('hidden');
+        }
+
+        function showStepSection(stepNum) {
+            currentStep = stepNum;
+            document.querySelectorAll('.step-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`step-${stepNum}`).classList.remove('hidden');
+            refreshNavigationUI();
+            updateProgressivePasswordHint();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function refreshNavigationUI() {
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`nav-step-${i}`);
+                const lockIcon = document.getElementById(`lock-icon-${i}`);
+                const isUnlocked = appState.unlockedSteps[i] || appState.teacherMode;
+
+                lockIcon.textContent = isUnlocked ? '🔓' : '🔒';
+
+                if (i === currentStep) {
+                    btn.className = 'step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-emerald-600 text-white shadow';
+                } else if (isUnlocked) {
+                    btn.className = 'step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-slate-800 text-emerald-300 hover:bg-slate-700 border border-emerald-500/40';
+                } else {
+                    btn.className = 'step-tab flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs sm:text-sm font-semibold transition bg-slate-800/70 text-slate-400 hover:bg-slate-800 border border-slate-700';
+                }
+            }
+        }
+
+        let teacherSolutionsVisible = true;
+        function toggleTeacherSolutions() {
+            teacherSolutionsVisible = !teacherSolutionsVisible;
+            document.querySelectorAll('.teacher-solution').forEach(el => {
+                el.classList.toggle('hidden', !teacherSolutionsVisible);
+            });
+            const btn = document.getElementById('btn-toggle-solutions');
+            if (btn) btn.textContent = teacherSolutionsVisible
+                ? 'Masquer les corrigés types'
+                : 'Afficher les corrigés types';
+        }
+
+        /* Modale Biblio */
+        function openBiblioModal() {
+            document.getElementById('biblio-modal').classList.remove('hidden');
+        }
+        function closeBiblioModal() {
+            document.getElementById('biblio-modal').classList.add('hidden');
+        }
+
+        /* -------------------------------------------------------------------
+         * 7. ONGLETS DOCUMENTAIRES (ÉTAPE 2A)
+         * ------------------------------------------------------------------- */
+        function switchDocTab(docNum) {
+            document.querySelectorAll('.doc-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`doc-content-${docNum}`).classList.remove('hidden');
+
+            document.querySelectorAll('.doc-tab-btn').forEach((btn, idx) => {
+                if (idx + 1 === docNum) {
+                    btn.className = 'doc-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-emerald-600 text-white shadow-sm transition';
+                } else {
+                    btn.className = 'doc-tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition';
+                }
+            });
+        }
+
+        /* -------------------------------------------------------------------
+         * 8. ATELIER 1 : LA LOUPE PÉDOLOGIQUE SUR COUPE DE SOL
+         * ------------------------------------------------------------------- */
+        let currentZoomFilter = 'all';
+
+        function initLoupeScene() {
+            const layer = document.getElementById('organisms-layer');
+            const checklist = document.getElementById('specimen-checklist');
+            layer.innerHTML = '';
+            checklist.innerHTML = '';
+
+            ORGANISMS_DATA.forEach(org => {
+                // Création du marqueur SVG anatomique sur la coupe de sol
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `node-${org.id}`;
+                btn.dataset.group = org.group;
+                btn.style.left = `${org.x}%`;
+                btn.style.top = `${org.y}%`;
+                btn.style.transform = 'translate(-50%, -50%)';
+                btn.className = 'organism-node absolute w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/95 border-2 shadow-md flex items-center justify-center p-1 cursor-pointer focus:outline-none';
+                btn.style.borderColor = org.color;
+                btn.title = `${org.name} — ${org.groupLabel} (${org.size})`;
+                btn.innerHTML = org.svg;
+
+                btn.addEventListener('mouseenter', () => inspectOrganism(org));
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    inspectOrganism(org);
+                });
+
+                layer.appendChild(btn);
+
+                // Badge checklist
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.id = `chip-${org.id}`;
+                chip.className = 'px-2 py-0.5 rounded text-[10px] font-medium border transition bg-white text-slate-600 border-slate-300 hover:border-emerald-500';
+                chip.textContent = org.name.split(' (')[0];
+                chip.addEventListener('click', () => inspectOrganism(org));
+                checklist.appendChild(chip);
+            });
+
+            renderMorphoQuiz();
+
+            // Gestion du mouvement de la loupe
+            const scene = document.getElementById('soil-scene');
+            const lens = document.getElementById('magnifying-lens');
+
+            const moveLens = (clientX, clientY) => {
+                const rect = scene.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                    lens.classList.remove('hidden');
+                    lens.style.left = `${x}px`;
+                    lens.style.top = `${y}px`;
+                }
+            };
+
+            scene.addEventListener('mousemove', (e) => moveLens(e.clientX, e.clientY));
+            scene.addEventListener('mouseleave', () => lens.classList.add('hidden'));
+            scene.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    moveLens(e.touches[0].clientX, e.touches[0].clientY);
+                }
+            }, { passive: true });
+
+            updateDiscoveredUI();
+        }
+
+        function setZoomFilter(filter) {
+            currentZoomFilter = filter;
+            const lens = document.getElementById('magnifying-lens');
+            const magLabel = document.getElementById('lens-mag-label');
+            const scaleLabel = document.getElementById('lens-scale-label');
+
+            const config = {
+                all: { mag: 'LOUPE ×10', scale: 'Toutes tailles', size: '144px' },
+                macro: { mag: 'LOUPE ×5', scale: '4 – 80 mm', size: '160px' },
+                meso: { mag: 'LOUPE ×20', scale: '0,2 – 4 mm', size: '148px' },
+                microfaune: { mag: 'MICROSCOPE ×100', scale: '< 0,2 mm', size: '140px' },
+                microorg: { mag: 'MICROSCOPE ×1000', scale: '< 0,05 mm', size: '136px' }
+            };
+
+            magLabel.textContent = config[filter].mag;
+            scaleLabel.textContent = config[filter].scale;
+            lens.style.width = config[filter].size;
+            lens.style.height = config[filter].size;
+
+            document.querySelectorAll('.zoom-filter-btn').forEach(b => {
+                b.classList.remove('ring-2', 'ring-emerald-500');
+            });
+            const activeBtn = document.getElementById(`zoom-btn-${filter}`);
+            if (activeBtn) {
+                activeBtn.classList.add('ring-2', 'ring-emerald-500');
+            }
+
+            document.querySelectorAll('.organism-node').forEach(node => {
+                if (filter === 'all' || node.dataset.group === filter) {
+                    node.style.opacity = '1';
+                    node.style.pointerEvents = 'auto';
+                } else {
+                    node.style.opacity = '0.18';
+                    node.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        function inspectOrganism(org) {
+            if (!appState.discoveredOrganisms.includes(org.id)) {
+                appState.discoveredOrganisms.push(org.id);
+                saveToStorage();
+                updateDiscoveredUI();
+            }
+
+            document.querySelectorAll('.organism-node').forEach(n => n.classList.remove('active-specimen'));
+            const activeNode = document.getElementById(`node-${org.id}`);
+            if (activeNode) activeNode.classList.add('active-specimen');
+
+            // Agrandissement réel du SVG dans la lentille de la loupe
+            const lensZoomBox = document.getElementById('lens-zoom-svg');
+            if (lensZoomBox) {
+                lensZoomBox.innerHTML = `<div class="w-16 h-16 bg-white rounded-full p-1.5 shadow-lg border border-amber-300">${org.svg}</div>`;
+            }
+            const lensScaleLabel = document.getElementById('lens-scale-label');
+            if (lensScaleLabel) {
+                lensScaleLabel.textContent = org.name.split(' (')[0];
+            }
+
+            // Remplissage de la fiche taxonomique et anatomique
+            const badge = document.getElementById('spec-category-badge');
+            badge.textContent = org.groupLabel;
+            badge.style.backgroundColor = `${org.color}20`;
+            badge.style.color = org.color;
+
+            document.getElementById('spec-taxon-badge').textContent = org.taxon;
+            document.getElementById('spec-name').textContent = org.name;
+            document.getElementById('spec-icon-preview').innerHTML = org.svg;
+            document.getElementById('spec-size').textContent = org.size;
+            document.getElementById('spec-trophic').textContent = org.trophic;
+            document.getElementById('spec-morphology').textContent = org.morphology;
+            document.getElementById('spec-role').textContent = org.role;
+            document.getElementById('spec-threat').textContent = org.threat;
+
+            // Détails complémentaires
+            const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || '—'; };
+            setTxt('spec-function', org.fonction);
+            setTxt('spec-habitat', org.habitat);
+            setTxt('spec-abundance', org.abondance);
+            setTxt('spec-levers', org.leviers);
+            setTxt('spec-confusion', org.confusion);
+            setTxt('spec-fact', org.anecdote);
+
+            // Marqueur sur l'échelle logarithmique (1 µm → 100 mm)
+            const marker = document.getElementById('spec-scale-marker');
+            if (marker && org.sizeMm) {
+                const pos = v => Math.min(1, Math.max(0, (Math.log10(v) + 3) / 5)) * 100;
+                const a = pos(org.sizeMm[0]);
+                const b = pos(org.sizeMm[1]);
+                marker.style.left = `${Math.min(a, 98)}%`;
+                marker.style.width = `${Math.max(b - a, 2)}%`;
+                marker.style.borderColor = org.color;
+                marker.style.backgroundColor = `${org.color}55`;
+            }
+        }
+
+        function updateDiscoveredUI() {
+            document.getElementById('discovered-count').textContent = appState.discoveredOrganisms.length;
+            appState.discoveredOrganisms.forEach(id => {
+                const chip = document.getElementById(`chip-${id}`);
+                if (chip) {
+                    chip.className = 'px-2 py-0.5 rounded text-[10px] font-bold border bg-emerald-100 text-emerald-900 border-emerald-400';
+                }
+            });
+        }
+
+        let morphoValidated = {};
+
+        function renderMorphoQuiz() {
+            const grid = document.getElementById('morpho-quiz-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            MORPHO_QUIZ.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-800/90 border border-slate-700 rounded-xl p-3.5 space-y-2.5';
+                card.innerHTML = `<p class="text-xs text-slate-200 leading-relaxed italic">${item.clue}</p>`;
+
+                const btnRow = document.createElement('div');
+                btnRow.className = 'flex flex-wrap gap-1.5';
+
+                item.options.forEach((opt, idx) => {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.textContent = opt;
+                    b.className = 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 transition';
+                    b.addEventListener('click', () => {
+                        btnRow.querySelectorAll('button').forEach(x => {
+                            x.classList.remove('bg-emerald-600', 'border-emerald-400', 'bg-red-600', 'border-red-400');
+                            x.classList.add('bg-slate-700');
+                        });
+                        b.classList.remove('bg-slate-700');
+                        if (idx === item.correct) {
+                            b.classList.add('bg-emerald-600', 'border-emerald-400');
+                            morphoValidated[item.id] = true;
+                        } else {
+                            b.classList.add('bg-red-600', 'border-red-400');
+                            morphoValidated[item.id] = false;
+                        }
+                        const okCount = Object.values(morphoValidated).filter(Boolean).length;
+                        document.getElementById('morpho-quiz-score').textContent = `Défi : ${okCount} / ${MORPHO_QUIZ.length} validés`;
+                    });
+                    btnRow.appendChild(b);
+                });
+
+                card.appendChild(btnRow);
+                grid.appendChild(card);
+            });
+        }
+
+        function updateDiscoveredUI() {
+            document.getElementById('discovered-count').textContent = appState.discoveredOrganisms.length;
+            appState.discoveredOrganisms.forEach(id => {
+                const chip = document.getElementById(`chip-${id}`);
+                if (chip) {
+                    chip.className = 'px-2 py-0.5 rounded text-[11px] font-bold border bg-emerald-100 text-emerald-900 border-emerald-400';
+                }
+            });
+        }
+
+        /* -------------------------------------------------------------------
+         * 9. ATELIER 2 : SIMULATEUR AGRONOMIQUE (MO, ADN, ENGRAIS)
+         * ------------------------------------------------------------------- */
+        function resetSimulator() {
+            document.getElementById('sim-cover').value = '0';
+            document.getElementById('sim-tillage').value = '0';
+            document.getElementById('sim-om').value = '0';
+            document.getElementById('sim-n').value = '190';
+            updateSimulator();
+        }
+
+        function updateSimulator() {
+            const cover = parseInt(document.getElementById('sim-cover').value, 10);
+            const tillage = parseInt(document.getElementById('sim-tillage').value, 10);
+            const om = parseInt(document.getElementById('sim-om').value, 10);
+            const nDose = parseInt(document.getElementById('sim-n').value, 10);
+
+            document.getElementById('sim-n-val').textContent = `${nDose} kg N/ha`;
+
+            // Calcul pédagogique cohérent avec les données RMQS du cours
+            const dna = +(6.2 + cover * 1.8 + tillage * 1.5 + om * 1.6 - (nDose > 160 ? 0.6 : 0)).toFixed(1);
+            const mo = +(1.7 + cover * 0.45 + tillage * 0.35 + om * 0.55).toFixed(1);
+
+            // Équivalence vulgarisée en milliards de bactéries/g
+            let bactText = '';
+            if (dna < 6) bactText = '(≈ < 1 Md bactéries/g)';
+            else if (dna < 9) bactText = '(≈ 1 – 2 Md bactéries/g)';
+            else if (dna < 11) bactText = '(≈ 2 – 2,5 Md bactéries/g)';
+            else if (dna <= 14) bactText = '(≈ 2,5 – 3 Md bactéries/g)';
+            else bactText = '(≈ +3 Md bactéries/g)';
+
+            // Ratio Bactéries / Champignons
+            const fungiPct = Math.min(48, Math.round(13 + cover * 6 + tillage * 8 + om * 5));
+            const bactPct = Math.max(42, 90 - fungiPct);
+
+            // Coût énergétique engrais azotés
+            const energyEl = document.getElementById('res-energy');
+            if (nDose >= 160) {
+                energyEl.textContent = 'Très élevé';
+                energyEl.className = 'px-2 py-0.5 rounded font-bold bg-red-100 text-red-800';
+            } else if (nDose >= 110) {
+                energyEl.textContent = 'Modéré';
+                energyEl.className = 'px-2 py-0.5 rounded font-bold bg-amber-100 text-amber-800';
+            } else {
+                energyEl.textContent = 'Maîtrisé';
+                energyEl.className = 'px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800';
+            }
+
+            // Risque pollution des eaux
+            const waterEl = document.getElementById('res-water');
+            const leachingRisk = (nDose >= 150 && cover === 0) || nDose >= 180;
+            const moderateRisk = nDose >= 120 || cover === 0;
+            if (leachingRisk) {
+                waterEl.textContent = 'Élevé (eaux souterraines/surface)';
+                waterEl.className = 'px-2 py-0.5 rounded font-bold bg-red-100 text-red-800';
+            } else if (moderateRisk) {
+                waterEl.textContent = 'Modéré';
+                waterEl.className = 'px-2 py-0.5 rounded font-bold bg-amber-100 text-amber-800';
+            } else {
+                waterEl.textContent = 'Faible (sol couvert & retenu)';
+                waterEl.className = 'px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800';
+            }
+
+            // Indice global de vie biologique / 100
+            const healthScore = Math.min(100, Math.max(15, Math.round((cover * 18) + (tillage * 16) + (om * 18) + (nDose <= 130 ? 14 : 4))));
+
+            // Mise à jour DOM
+            document.getElementById('res-dna').textContent = `${dna.toString().replace('.', ',')} µg/g`;
+            document.getElementById('res-bact-count').textContent = bactText;
+            document.getElementById('bar-dna').style.width = `${Math.min(100, (dna / 16) * 100)}%`;
+
+            document.getElementById('res-mo').textContent = `${mo.toString().replace('.', ',')} %`;
+            document.getElementById('bar-mo').style.width = `${Math.min(100, (mo / 4.6) * 100)}%`;
+            document.getElementById('res-mo-status').textContent =
+                mo < 2.3 ? 'Faible (type grandes cultures)' : (mo < 3.4 ? 'Intermédiaire (en restauration)' : 'Élevé (proche prairie/élevage)');
+
+            document.getElementById('res-bact-pct').textContent = `Bactéries : ${bactPct} %`;
+            document.getElementById('res-fungi-pct').textContent = `Champignons : ${fungiPct} %`;
+            document.getElementById('bar-bact').style.width = `${bactPct}%`;
+            document.getElementById('bar-fungi').style.width = `${fungiPct}%`;
+            document.getElementById('res-ratio-note').textContent =
+                fungiPct >= 32
+                    ? 'Bon équilibre bactéries / champignons : réseaux mycéliens préservés.'
+                    : 'Profil bactério-dominé : le travail du sol et le manque de MO limitent les champignons.';
+
+            document.getElementById('res-health-score').textContent = `${healthScore} / 100`;
+
+            const feedback = document.getElementById('sim-feedback');
+            if (healthScore >= 75) {
+                feedback.className = 'rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-xs sm:text-sm text-emerald-950 leading-relaxed';
+                feedback.innerHTML = '<strong>Diagnostic agronomique :</strong> Excellent itinéraire ! Le sol est couvert, alimenté en matière organique et peu perturbé : la biomasse microbienne dépasse les standards intensifs et l’équilibre fongique se rapproche d’une prairie permanente.';
+            } else if (healthScore >= 45) {
+                feedback.className = 'rounded-xl bg-sky-50 border border-sky-200 p-4 text-xs sm:text-sm text-sky-950 leading-relaxed';
+                feedback.innerHTML = '<strong>Diagnostic agronomique :</strong> Transition en cours. La réduction du travail du sol ou l’implantation de couverts relance l’activité biologique, mais attention à limiter les excès d’engrais minéraux pour protéger les eaux.';
+            } else {
+                feedback.className = 'rounded-xl bg-amber-50 border border-amber-200 p-4 text-xs sm:text-sm text-amber-950 leading-relaxed';
+                feedback.innerHTML = '<strong>Diagnostic agronomique :</strong> Système épuisant : sol nu, travaillé et exportateur. La vie biologique décline, les champignons sont minoritaires et la forte dose d’engrais minéraux engendre un coût énergétique élevé et un risque de pollution des eaux.';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 10. VERROUILLAGE DE LA FICHE DE SYNTHÈSE (ÉTAPE 3)
+         * ------------------------------------------------------------------- */
+        function toggleLockSynthesis() {
+            appState.synthesisLocked = !appState.synthesisLocked;
+            applySynthesisLockUI();
+            saveToStorage();
+        }
+
+        function applySynthesisLockUI() {
+            const fields = document.querySelectorAll('.synth-field');
+            const icon = document.getElementById('synth-lock-icon');
+            const text = document.getElementById('synth-lock-text');
+
+            fields.forEach(f => {
+                f.readOnly = appState.synthesisLocked;
+                if (appState.synthesisLocked) {
+                    f.classList.add('bg-slate-100', 'text-slate-600');
+                } else {
+                    f.classList.remove('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            if (appState.synthesisLocked) {
+                icon.textContent = '🔒';
+                text.textContent = 'Déverrouiller ma fiche';
+            } else {
+                icon.textContent = '🔓';
+                text.textContent = 'Verrouiller ma fiche';
+            }
+        }
+
+        /* -------------------------------------------------------------------
+         * 11. QCM « BILAN FLASH » & EXPORTATION PDF (ÉTAPE 4)
+         * ------------------------------------------------------------------- */
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            QUIZ_QUESTIONS.forEach((q, qIdx) => {
+                const block = document.createElement('div');
+                block.className = 'p-4 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5';
+                block.innerHTML = `<p class="text-sm font-bold text-slate-900">${q.question}</p>`;
+
+                const optsDiv = document.createElement('div');
+                optsDiv.className = 'space-y-1.5';
+
+                q.options.forEach((opt, optIdx) => {
+                    const checked = appState.quizAnswers[q.id] === optIdx ? 'checked' : '';
+                    const label = document.createElement('label');
+                    label.className = 'flex items-center gap-2.5 p-2.5 rounded-lg bg-white border border-slate-200 hover:border-emerald-400 cursor-pointer text-xs sm:text-sm text-slate-800 transition';
+                    label.innerHTML = `
+                        <input type="radio" name="${q.id}" value="${optIdx}" ${checked} class="accent-emerald-600 w-4 h-4">
+                        <span>${opt}</span>
+                    `;
+                    label.querySelector('input').addEventListener('change', () => {
+                        appState.quizAnswers[q.id] = optIdx;
+                        saveToStorage();
+                    });
+                    optsDiv.appendChild(label);
+                });
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.id = `feedback-${q.id}`;
+                feedbackDiv.className = 'hidden text-xs p-2.5 rounded-lg font-medium';
+
+                block.appendChild(optsDiv);
+                block.appendChild(feedbackDiv);
+                container.appendChild(block);
+            });
+        }
+
+        let lastQuizScore = null;
+
+        function gradeQuiz() {
+            let score = 0;
+            QUIZ_QUESTIONS.forEach(q => {
+                const userChoice = appState.quizAnswers[q.id];
+                const fb = document.getElementById(`feedback-${q.id}`);
+                fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-red-100', 'text-red-900');
+
+                if (userChoice === q.correct) {
+                    score++;
+                    fb.classList.add('bg-emerald-100', 'text-emerald-900');
+                    fb.innerHTML = `✅ <strong>Bonne réponse !</strong> ${q.explanation}`;
+                } else {
+                    fb.classList.add('bg-red-100', 'text-red-900');
+                    fb.innerHTML = `❌ <strong>À revoir :</strong> ${q.explanation}`;
+                }
+            });
+
+            lastQuizScore = `${score} / ${QUIZ_QUESTIONS.length}`;
+            document.getElementById('quiz-score-badge').textContent = `Score : ${lastQuizScore}`;
+        }
+
+        // Télécharge une copie HTML autonome de l'intégralité de l'application.
+        // Le fichier conserve les quatre étapes, les dossiers, les ateliers et les fonctionnalités interactives.
+        function setTeacherView(showTeacher) {
+            teacherSolutionsVisible = !!showTeacher;
+            document.querySelectorAll('.teacher-solution').forEach(el => {
+                el.classList.toggle('hidden', !teacherSolutionsVisible);
+            });
+            const banner = document.getElementById('teacher-banner');
+            if (banner) banner.classList.toggle('hidden', !showTeacher);
+            const teacherBtn = document.getElementById('btn-teacher-view');
+            const studentBtn = document.getElementById('btn-student-view');
+            if (teacherBtn) {
+                teacherBtn.classList.toggle('is-active', !!showTeacher);
+                teacherBtn.setAttribute('aria-pressed', String(!!showTeacher));
+            }
+            if (studentBtn) {
+                studentBtn.classList.toggle('is-active', !showTeacher);
+                studentBtn.setAttribute('aria-pressed', String(!showTeacher));
+            }
+            const toggleBtn = document.getElementById('btn-toggle-solutions');
+            if (toggleBtn) toggleBtn.textContent = showTeacher ? 'Masquer les corrigés types' : 'Afficher les corrigés types';
+            updateProgressivePasswordHint();
+        }
+
+        function printTeacherCorrection() {
+            setTeacherView(true);
+            document.body.classList.add('full-course-pdf');
+            const restore = () => {
+                document.body.classList.remove('full-course-pdf');
+                window.removeEventListener('afterprint', restore);
+            };
+            window.addEventListener('afterprint', restore);
+            requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+        }
+
+        function downloadFullCoursePDF() {
+            // Le navigateur génère le PDF via son moteur d'impression natif.
+            // Toutes les étapes et les panneaux documentaires sont rendus avant l'export.
+            document.body.classList.add('full-course-pdf');
+            const restore = () => {
+                document.body.classList.remove('full-course-pdf');
+                window.removeEventListener('afterprint', restore);
+            };
+            window.addEventListener('afterprint', restore);
+            // Laisse le temps au navigateur d'appliquer les styles d'impression.
+            requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+        }
+
+        function prepareAndPrint() {
+            saveToStorage();
+            document.getElementById('print-student-name').textContent = appState.studentName || 'Élève (non renseigné)';
+            document.getElementById('print-date').textContent = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('print-score').textContent = lastQuizScore || 'Non validé';
+
+            document.getElementById('print-hypothesis').textContent = appState.fields['input-hypothesis'] || '—';
+            document.getElementById('print-q1').textContent = appState.fields['q1'] || '—';
+            document.getElementById('print-q2').textContent = appState.fields['q2'] || '—';
+            document.getElementById('print-q3').textContent = appState.fields['q3'] || '—';
+            document.getElementById('print-q4').textContent = appState.fields['q4'] || '—';
+            document.getElementById('print-q5').textContent = appState.fields['q5'] || '—';
+
+            const dna = document.getElementById('res-dna').textContent;
+            const mo = document.getElementById('res-mo').textContent;
+            const bact = document.getElementById('res-bact-pct').textContent;
+            const fungi = document.getElementById('res-fungi-pct').textContent;
+            const health = document.getElementById('res-health-score').textContent;
+
+            document.getElementById('print-workshops').textContent =
+                `Loupe pédologique : ${appState.discoveredOrganisms.length} / 21 taxons identifiés • Simulateur agronomique : Biomasse = ${dna}, MO = ${mo}, ${bact} / ${fungi}, Indice vie du sol = ${health}.`;
+
+            document.getElementById('print-synth-1').textContent = appState.fields['synth-1'] || '—';
+            document.getElementById('print-synth-2').textContent = appState.fields['synth-2'] || '—';
+            document.getElementById('print-synth-3').textContent = appState.fields['synth-3'] || '—';
+
+            window.print();
+        }
+    </script>
+</body>
+</html>

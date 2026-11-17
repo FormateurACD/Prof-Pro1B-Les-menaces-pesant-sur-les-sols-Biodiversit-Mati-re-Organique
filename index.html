@@ -3063,7 +3063,7 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
                 window.removeEventListener('afterprint', restore);
             };
             window.addEventListener('afterprint', restore);
-            requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+            window.print();
         }
 
         function downloadFullCoursePDF() {
@@ -3076,7 +3076,7 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
             };
             window.addEventListener('afterprint', restore);
             // Laisse le temps au navigateur d'appliquer les styles d'impression.
-            requestAnimationFrame(() => requestAnimationFrame(() => window.print()));
+            window.print();
         }
 
         function prepareAndPrint() {

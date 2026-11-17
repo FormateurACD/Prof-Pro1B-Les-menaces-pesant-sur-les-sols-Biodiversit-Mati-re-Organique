@@ -90,6 +90,14 @@
                 height: auto !important;
                 overflow: visible !important;
             }
+            body.full-course-pdf .step2-tab-panel,
+            body.full-course-pdf .step2-tab-panel.hidden {
+                display: block !important;
+                visibility: visible !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            body.full-course-pdf .step2-tab-navigation { display: none !important; }
             body.full-course-pdf .teacher-solution {
                 display: block !important;
             }
@@ -406,6 +414,31 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
 <!-- ÉTAPE 2 : DOSSIERS DOCUMENTAIRES, LOUPE & SIMULATEUR (25 min)      -->
 <!-- ================================================================= -->
 <section class="step-section hidden space-y-8" id="step-2">
+<!-- Navigation interne de l'étape 2 : espaces de travail pour les élèves et le professeur -->
+<div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-3 sm:p-4 space-y-3 step2-tab-navigation">
+    <div>
+        <p class="text-sm font-bold text-slate-800">Étape 2 • Dossiers &amp; Labo</p>
+        <p class="text-xs text-slate-500 mt-1">Choisissez une activité. Les corrigés enseignants restent accessibles dans chaque onglet.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-2" role="tablist" aria-label="Activités de l'étape 2">
+        <button type="button" role="tab" aria-selected="true" aria-controls="step2-panel-documents" onclick="switchStep2Tab('documents')" id="step2-tab-documents" class="step2-tab-btn text-left rounded-xl border-2 border-emerald-600 bg-emerald-50 px-3.5 py-3 text-sm font-bold text-emerald-900 transition">
+            <span class="block text-xs uppercase tracking-wide text-emerald-700">Onglet 1</span>
+            <span class="block mt-1">A. Dossier scientifique</span>
+            <span class="block mt-1 text-xs font-normal text-slate-600">Documents 1 à 3 et questions d'analyse documentaire</span>
+        </button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="step2-panel-loupe" onclick="switchStep2Tab('loupe')" id="step2-tab-loupe" class="step2-tab-btn text-left rounded-xl border-2 border-slate-200 bg-white px-3.5 py-3 text-sm font-bold text-slate-700 hover:border-amber-400 transition">
+            <span class="block text-xs uppercase tracking-wide text-amber-700">Étape 2 • Atelier Interactif 1</span>
+            <span class="block mt-1">La Loupe Pédologique</span>
+            <span class="block mt-1 text-xs font-normal text-slate-600">Exploration taxonomique et anatomique de la faune du sol</span>
+        </button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="step2-panel-simulateur" onclick="switchStep2Tab('simulateur')" id="step2-tab-simulateur" class="step2-tab-btn text-left rounded-xl border-2 border-slate-200 bg-white px-3.5 py-3 text-sm font-bold text-slate-700 hover:border-teal-400 transition">
+            <span class="block text-xs uppercase tracking-wide text-teal-700">Étape 2 • Atelier Interactif 2</span>
+            <span class="block mt-1">Simulateur Agronomique</span>
+            <span class="block mt-1 text-xs font-normal text-slate-600">Impact des pratiques sur la biomasse et la matière organique</span>
+        </button>
+    </div>
+</div>
+<div id="step2-panel-documents" class="step2-tab-panel space-y-8">
 <!-- PARTIE A : DOSSIERS DOCUMENTAIRES + QUESTIONS D'ANALYSE -->
 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 <div class="bg-slate-800 px-6 py-4 text-white flex flex-wrap items-center justify-between gap-2">
@@ -642,6 +675,8 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
 </aside>
 </div>
 </div>
+</div>
+<div id="step2-panel-loupe" class="step2-tab-panel hidden space-y-8">
 <!-- ============================================================= -->
 <!-- PARTIE B : ATELIER 1 — LA LOUPE PÉDOLOGIQUE INTERACTIVE        -->
 <!-- ============================================================= -->
@@ -880,6 +915,8 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
 </aside>
 </div>
 </div>
+</div>
+<div id="step2-panel-simulateur" class="step2-tab-panel hidden space-y-8">
 <!-- ============================================================= -->
 <!-- PARTIE C : ATELIER 2 — SIMULATEUR D'ITINÉRAIRE TECHNIQUE      -->
 <!-- ============================================================= -->
@@ -1028,6 +1065,7 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
 </div>
 </section>
 <!-- ================================================================= -->
+</div>
 <!-- ÉTAPE 3 : FICHE DE SYNTHÈSE DU COURS À COMPLÉTER (15 min)         -->
 <!-- ================================================================= -->
 <section class="step-section hidden space-y-6" id="step-3">
@@ -2475,6 +2513,33 @@ main .bg-gradient-to-r.from-emerald-800 { background:linear-gradient(115deg,#0f7
             label.textContent = `Code à communiquer pour débloquer ${item.target} :`;
             value.textContent = item.code;
             box.classList.remove('hidden');
+        }
+
+        function switchStep2Tab(tabName) {
+            const tabs = ['documents', 'loupe', 'simulateur'];
+            if (!tabs.includes(tabName)) return;
+
+            tabs.forEach(name => {
+                const panel = document.getElementById(`step2-panel-${name}`);
+                const button = document.getElementById(`step2-tab-${name}`);
+                const active = name === tabName;
+                if (panel) panel.classList.toggle('hidden', !active);
+                if (button) {
+                    button.setAttribute('aria-selected', String(active));
+                    button.classList.toggle('border-emerald-600', active && name === 'documents');
+                    button.classList.toggle('bg-emerald-50', active && name === 'documents');
+                    button.classList.toggle('text-emerald-900', active && name === 'documents');
+                    button.classList.toggle('border-amber-500', active && name === 'loupe');
+                    button.classList.toggle('bg-amber-50', active && name === 'loupe');
+                    button.classList.toggle('text-amber-900', active && name === 'loupe');
+                    button.classList.toggle('border-teal-600', active && name === 'simulateur');
+                    button.classList.toggle('bg-teal-50', active && name === 'simulateur');
+                    button.classList.toggle('text-teal-900', active && name === 'simulateur');
+                    button.classList.toggle('border-slate-200', !active);
+                    button.classList.toggle('bg-white', !active);
+                    button.classList.toggle('text-slate-700', !active);
+                }
+            });
         }
 
         function showStepSection(stepNum) {
